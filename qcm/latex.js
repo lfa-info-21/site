@@ -1,5 +1,5 @@
 
-const utils = require('./utils')
+const utils = require('../utils')
 const token_sys = require("./tokens")
 
 const TokenTypeEnums = {
@@ -12,7 +12,7 @@ const TokenTypeEnums = {
 
 }
 Object.freeze(TokenTypeEnums)
-const NAME_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+=()-*/[], éèà?!.$\'\"ôêâîëöïäüû%:"
+const NAME_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+=()-*/^<>|[], éèà?!.$\'\"ôêâîëöïäüû%:"
 const IGNORE_CHARS = "\t\n\r"
 
 class LatexLexer {

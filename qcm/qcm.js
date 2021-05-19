@@ -31,8 +31,11 @@ class Question {
 }
 
 class QCM {
-    constructor(questions) {
+    constructor(questions, name, author, uuid) {
         this.questions = questions
+        this.name = name
+        this.author = author
+        this.uuid = uuid
 
         this.shuffle = function () {
             this.questions.forEach((el) => {
@@ -73,7 +76,7 @@ const buildQcm = function(json) {
     json['questions'].forEach((el) => {
         questions.push(buildQuestion(el))
     })
-    return new QCM(questions)
+    return new QCM(questions, json['name'], json['author'], json['uuid'])
 }
 
 const QCMBuilder = {
@@ -109,7 +112,7 @@ const QCMBuilder = {
                     coef_cont = parameters[i].parameters[0]
                 } 
             }
-            var rName = new LatexBuilder(QuName).build()
+            var rName = new latexsys.LatexBuilder(QuName).build()
 
             var answers = []
             qu.query("mauvaise|bonne").forEach((ans)=>{
@@ -133,7 +136,7 @@ const QCMBuilder = {
             questions.push(new Question(rName, answers, Number(coef_cont.split(",")[0].split("=")[1])))
         })
 
-        return new QCM(questions).smooth()
+        return new QCM(questions, "", "", "").smooth()
     }
 }
 Object.freeze(QCMBuilder)
