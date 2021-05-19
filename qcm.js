@@ -1,6 +1,4 @@
 
-const latexsys = require('./latex')
-
 class Answer {
     constructor(answer, status) {
         this.answer = answer
@@ -52,6 +50,32 @@ class QCM {
     }
 }
 
+const buildAnswer = function (json) {
+    var answer = json['answer']
+    var status = json['status']
+
+    return new Answer(answer, status)
+}
+
+const buildQuestion = function(json) {
+    var question = json['question']
+    var answers = []
+    json['answers'].forEach((el) => {
+        answers.push(buildAnswer(el))
+    })
+    var coefficient = json['coefficient']
+
+    return new Question(question, answers, coefficient)
+}
+
+const buildQcm = function(json) {
+    var questions = []
+    json['questions'].forEach((el) => {
+        questions.push(buildQuestion(el))
+    })
+    return new QCM(questions)
+}
+
 const QCMBuilder = {
     "fromLatex":function fromLatex(string) {
         var data = new latexsys.LatexInterpreter(string).start_build()
@@ -85,7 +109,7 @@ const QCMBuilder = {
                     coef_cont = parameters[i].parameters[0]
                 } 
             }
-            var rName = new latexsys.LatexBuilder(QuName).build()
+            var rName = new LatexBuilder(QuName).build()
 
             var answers = []
             qu.query("mauvaise|bonne").forEach((ans)=>{
@@ -114,7 +138,10 @@ const QCMBuilder = {
 }
 Object.freeze(QCMBuilder)
 
+const latexsys = require('./latex')
 
 module.exports = {
-    QCMBuilder: QCMBuilder
+    QCM:QCM,
+    QCMBuilder:QCMBuilder,
+    buildQcm: buildQcm
 }
