@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        {% for question in qcm.questions %}
+
+        Name : {{ question.question }}<br>
+        {% for answer in question.answers %}
+        Reponse : {{ answer.answer }}<br>
+        {% endfor %}
+        <br>
+
+        {% endfor %}
+    </body>
+</html>
