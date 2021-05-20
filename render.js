@@ -5,7 +5,7 @@ function addMicroProcess(process) {
 }
 
 function addMicroProcessesData(request, context) {
-    for (var i = 0; i < __GLOBAL_MICROPROCESS; i++) {
+    for (var i = 0; i < __GLOBAL_MICROPROCESS.length; i++) {
         __GLOBAL_MICROPROCESS[i](request, context)
     }
 }
@@ -291,5 +291,6 @@ function render(string, request, context) {
 
 module.exports = {
     render: render,
-    Context: Context
+    Context: Context,
+    addMicroProcess: addMicroProcess
 }

@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 app.get('/qcm/create/', (req, res) => {
   var data = fs.readFileSync("templates/qcm-create.html", 'utf-8')
 
-  res.send(renderer.render(data, req, new renderer.Context()))
+  res.send(renderer.render(data, req, new renderer.Context({})))
 }) 
 
 app.post('/qcm/create', (req, res) => {
@@ -45,3 +45,27 @@ app.get('/qcm/:qcm', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
+
+
+
+
+
+
+/**
+ * 
+ * MicroProcessors
+ * 
+ */
+
+function navbarProcessor(request, context) {
+  const data = fs.readFileSync('templates/navbar.html', 'utf-8')
+
+  context.set('navbar', data)
+}
+renderer.addMicroProcess(navbarProcessor)
+function headerProcessor(request, context) {
+  const data = fs.readFileSync('templates/header.html', 'utf-8')
+
+  context.set('header', data)
+}
+renderer.addMicroProcess(headerProcessor)
