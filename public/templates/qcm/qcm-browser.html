@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('../head.html'); -%>
+    </head>
+    <body>
+        <% if( page > 0) { %>
+        <a href='/qcm/browse/?page=<%= page-1 %>'>Page précédente</a>
+        <% } %>
+        <% if( page < max_page) { %>
+        <a href='/qcm/browse/?page=<%= page %>'>Page suivante</a>
+        <% } %>
+
+        <% qcms.forEach(function (qcm) { %>
+            <a href="/qcm/<%= qcm.uuid %>">Nom du qcm : <%= qcm.name %></a><br>
+        <% }); %>
+    </body>
+</html>

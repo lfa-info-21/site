@@ -17,8 +17,21 @@ function browse (page) {
     arr = paginate(arr, page)
 
     for (var i = 0; i < arr.length; i++) {
-        arr[i] = qcm.buildQcm(fs.readFileSync(arr[i], 'utf-8'))
+      main
+        arr[i] = qcm.buildQcm(JSON.parse(fs.readFileSync('./qcm/data/'+arr[i], 'utf-8')))
+      master
     }
 
     return arr
+}
+
+function pageCount () {
+    var arr = fs.readdirSync('./qcm/data')
+
+    return Math.floor(arr.length / PAGINATED_COUNT)
+}
+
+module.exports = {
+    browse: browse,
+    pageCount: pageCount
 }
