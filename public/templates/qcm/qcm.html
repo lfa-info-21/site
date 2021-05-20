@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('../head.html'); -%>
+        <title><%=qcm.name%></title>
+    </head>
+    <body>
+
+        <% qcm.questions.forEach(function (question) { %>
+
+        Name : <%= question.question %><br>
+        <% question.answers.forEach(function (answer) { %>
+        
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>Reponse : <%= answer.answer %><br>
+        <% }); %>
+        <br>
+
+        <% }); %>
+    </body>
+</html>
