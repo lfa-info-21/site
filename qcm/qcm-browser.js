@@ -17,7 +17,9 @@ function browse (page) {
     arr = paginate(arr, page)
 
     for (var i = 0; i < arr.length; i++) {
+      main
         arr[i] = qcm.buildQcm(JSON.parse(fs.readFileSync('./qcm/data/'+arr[i], 'utf-8')))
+      master
     }
 
     return arr
