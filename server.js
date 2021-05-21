@@ -101,7 +101,7 @@ app.get('/', (req, res) => {
 })
 
 //mardown view
-app.get('/article/:name/', (req, res) => {
+app.get('/md/:name/', (req, res) => {
   var name = req.params.name
   if (!name.endsWith(".md")){
     name= name+".md"
