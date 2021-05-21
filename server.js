@@ -15,6 +15,10 @@ const qcmloader = require('./qcm/qcm')
 const qcmcreator = require('./qcm/qcm-loader')
 const qcmbrowser = require('./qcm/qcm-browser')
 
+//packages for markdown rendering
+const matter = require('gray-matter');
+const md = require('markdown-it');
+
 //for uploading files
 app.use(upload())
 
@@ -35,6 +39,29 @@ app.use(session({ secret: 'idk youre supposed to put a secret here', cookie: { m
 //main page
 app.get('/', (req, res) => {
   res.render('main.html', {"logged_in":req.session.logged_in, "time_left":req.session.cookie.maxAge / 1000})
+})
+
+//mardown view
+app.get('/article/:name/', (req, res) => {
+  var name = req.params.name
+  if (!name.endsWith(".md")){
+    name= name+".md"
+  }
+
+    // read the markdown file
+    const file = matter.read(__dirname + '/public/articles/' + req.params.name + '.md');
+
+    // use markdown-it to convert content to HTML
+    markDownFile = md()
+    let content = file.content;
+    var result = markDownFile.render(content);
+  
+    res.render("article", {
+      post: result,
+      title: file.data.title,
+      description: file.data.description,
+      image: file.data.image
+    });
 })
 
 //login page
