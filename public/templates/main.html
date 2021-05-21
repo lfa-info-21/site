@@ -12,26 +12,28 @@
             <% if (!logged_in) { %>
                 <p>Hello, if you are the owner of this website, you can: <a href="/login/">Login Here</a></p>
             <% } else { %>
-                <p>You are connected! The session will expire in: <%= time_left %> seconds. <a href="/logout/">Logout Here</a></p>
+                <p>You are connected! The session will expire in: <%= time_left %> seconds. <a href="/api/logout/">Logout Here</a></p>
             <% } %>
-            
-            <div class="row p-3">
-                <div class="col-3">
-                    <div class="row mt-2">
-                        <input type="button" value="Click Me Maybe?">
-                    </div>
-                    <div class="row mt-2">
-                        <input type="button" value="Mee Too!">
-                    </div>
-                </div>
 
+            <% if (typeof(posts) != "undefined" && posts) { %>
                 <div class="col">
-                    <div>
-                        <img class="image-responsive" src="/img/cat1.jpg" width="100%">
-                    </div>
+                    <% posts.forEach((post) => { %>
+                        <!-- here this html for a post preview should and will be in another template -->
+                        <div class="row post">
+                            <div class="col-5">
+                                <img class="img-responsive post-image" src="<%= post.image %>" width="100%">
+                            </div>
+                            <div class="col">
+                                <h2 class="post-title"><%= post.title %></h2>
+                                <%= post.description %>
+                            </div>
+                        </div>
+                    <% }) %>
                 </div>
-            </div>
-
+            <% } else { %>
+                <p>Sorry we couldn't find any posts.</p>
+            <% } %>
+            <%= posts[0].fpath %>
         </div>
     </body>
 

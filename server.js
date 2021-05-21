@@ -1,66 +1,3 @@
-
-//packages
-const fs = require('fs')
-
-// database
-var sqlite3 = require('sqlite3')
-var db = new sqlite3.Database(':memory:')
-const model = require('./sql/model')
-const user = new model.Model("utilisateur", db)
-
-const crypto = require('crypto');
-
-const SECRET_PWD_KEY = 'jfrokhfigqzujfDHFJCKSYLOTIR8IOLU'
-function hash (secret) {
-  return crypto.createHmac('sha256', secret)
-    .update(SECRET_PWD_KEY)
-    .digest('hex');
-}
-
-db.serialize(function () {
-  db.run(fs.readFileSync('./sql/init/tables.sql', 'utf-8'))
-
-  var stmt = db.prepare("INSERT INTO utilisateur VALUES (NULL, ?, 'none', ?, ?)")
-
-  stmt.run("thimote", hash('pwd1'), 0)
-  stmt.run("thimote2", hash('pwd0'), 1)
-  
-user.objects.update(0, { perm:3 })
-})
-
-// Permission Count
-const perm_length = 1
-
-// permissions
-function permissionVal (arr) {
-  var v = 0
-  var d = 1
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i]) {
-      v += d
-    }
-
-    d *= 2
-  }
-
-  return v
-}
-
-function permission (val) {
-  var arr = []
-  var d = Math.pow(2, perm_length - 1)
-  for (var i = perm_length - 1; i >= 0; i --) {
-    if ((val % d) != val) {
-      val = val % d
-      arr.push(true)
-    } else {
-      arr.push(false)
-    }
-    d /= 2
-  }
-  return arr.reverse()
-}
-
 //express related packages
 const express = require('express')
 const session = require('express-session')
@@ -73,6 +10,9 @@ const latexsys = require('./qcm/latex')
 const qcmloader = require('./qcm/qcm')
 const qcmcreator = require('./qcm/qcm-loader')
 const qcmbrowser = require('./qcm/qcm-browser')
+
+//other packages
+const fs = require('fs')
 
 //packages for markdown rendering
 const matter = require('gray-matter');
@@ -93,11 +33,39 @@ app.set('views', (__dirname+'/public/templates'));
 //setup session
 app.use(session({ secret: 'idk youre supposed to put a secret here', cookie: { maxAge:60*60*1000 }}))
 
+// API
+const api = require('./api/api')
+const { path } = require('osenv')
+
 //##############################################################
 
+class Post{
+  constructor (title, description, image, location){
+    this.title =title
+    this.description = description
+    this.image = image
+    this.location = location
+  }
+}
+
 //main page
-app.get('/', (req, res) => {
-  res.render('main.html', {"logged_in":req.session.logged_in, "time_left":req.session.cookie.maxAge / 1000})
+app.get('/', async function (req, res) {
+  var paths = await api.post.objects.asyncAll()
+
+  var posts = []
+
+  paths.forEach((itempath) => {
+
+    globalpath = __dirname + '/public/articles/' + itempath.fpath
+
+    if (fs.existsSync(globalpath)){
+      var item = matter.read(globalpath);
+      posts.push({"title":item.data.title, "description":item.data.description, "image":item.data.image})
+    }
+    
+  })
+
+  res.render('main.html', {"logged_in":req.session.logged_in, "time_left":req.session.cookie.maxAge / 1000, "posts":posts})
 })
 
 //mardown view
@@ -108,7 +76,7 @@ app.get('/md/:name/', (req, res) => {
   }
 
     // read the markdown file
-    const file = matter.read(__dirname + '/public/articles/' + req.params.name + '.md');
+    const file = matter.read(__dirname + '/public/articles/' + name);
 
     // use markdown-it to convert content to HTML
     markDownFile = md()
@@ -123,51 +91,8 @@ app.get('/md/:name/', (req, res) => {
     });
 })
 
-//login page
-app.post('/login/', (req, res) => {
-
-  //check form data for passsword, if ok set session logged_in to true and redirect to root/home
-  if(req.body.password && req.body.username){
-    db.serialize(
-      function() {
-        user.objects.filter({ username:req.body.username, pwd:hash(req.body.password) }).all(function (err, all) {
-          if (all == undefined || all.length == 0) {
-            res.redirect('')
-            return
-          }
-          console.log(all)
-          req.session.logged_in = true
-          req.session.username = req.body.username
-          req.session.permission = all[0].perm
-
-          res.redirect('/')
-        })
-      }
-    )
-  }
-
-  //if the password is wrong reload the page
-  else{
-    res.redirect("")
-  }
-  
-})
-
 app.get('/login/', (req, res) => {
-  // if logged in
-  if (req.session.logged_in){
-    res.redirect("/")
-  }
-  // if not logged in
-  else{
-    res.render('login.html')
-  }
-  
-})
-
-app.get('/logout/', (req, res) => {
-  req.session.logged_in = false;
-  res.redirect("/")
+  res.render('login.html', {})
 })
 
 //########## QCM ##########
@@ -201,7 +126,8 @@ app.post('/qcm/create', (req, res) => {
     res.redirect('/')
     return
   }
-  if (!permission(req.session.permission)[0]) {
+  if (!permission(req.session.permission)[0]
+    && !permission(req.session.permission)[1]) {
     res.redirect('/')
     return
   }
@@ -219,6 +145,8 @@ app.get('/qcm/:qcm', (req, res) => {
 
     res.render("qcm/qcm.html",{"qcm":qcm})
 })
+
+app.use('/api', api.router)
 
 //########## QCM END ##########
 

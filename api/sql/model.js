@@ -13,8 +13,15 @@ class SQLQueryer {
     update (index, values, callback) {
         var thisObj = this
         this.all(function (err, all) {
-            console.log(err)
+            if (all == undefined || all.length == 0)
+                return
+            
             var d = all[index]
+
+            if (d == undefined) {
+                return
+            }
+
             var filt_template = " WHERE id="+d.id+" "
             var upd_template = "UPDATE "+thisObj.tname+" "
 
@@ -27,12 +34,14 @@ class SQLQueryer {
             }
             
             var all = upd_template+templ_mod+filt_template
-            console.log(all)
+
             thisObj.db.run(all, callback)
         })
     }
-    create (values) {
-
+    create (values, callback) {
+        var dt = `INSERT INTO ${this.tname} (${Object.keys(values).join(', ')}) VALUES (${Object.values(values).map(this.buildFilter).join(', ')})`
+        
+        this.db.run(dt, callback)
     }
     buildFilter (filter) {
         if (isString(filter)) {
@@ -56,6 +65,27 @@ class SQLQueryer {
     }
     filter (filters) {
         return new SQLQueryer(this.tname, this.sql + " " + this.buildFilters(filters), this.db)
+    }
+    asyncAll () {
+        return new Promise(resolve => {
+            this.all(function (err, dat) {
+                  resolve(dat)
+              })
+          });
+    }
+    asyncCreate (values) {
+        return new Promise(resolve => {
+            this.create(values, function (err, dat) {
+                  resolve(dat)
+              })
+          });
+    }
+    asyncUpdate (values) {
+        return new Promise(resolve => {
+            this.update(values, function (err, dat) {
+                  resolve(dat)
+              })
+          });
     }
 }
 

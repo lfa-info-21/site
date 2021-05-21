@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>API Gateway</title>
+        <%- include('../head.html'); -%>
+        <link rel="stylesheet" href="/css/login.css">
+    </head>
+    <body>
+        <ul>
+            <% routes.forEach((route) => { %>
+                <li>
+                    METHOD=<%= route.METHOD %> PATH=<%= route.path %> NAME=<%= route.name %> DESC="<%= route.desc %>"
+                    <ul>
+                        <% Object.entries(route.params).forEach((param) => { %>
+                            <li>IN <%= param[0] %>="<%= param[1] %>"</li>
+                        <% }); %>
+                    </ul>
+                </li>
+            <% }); %>
+        <ul>
+    </body>
+</html>

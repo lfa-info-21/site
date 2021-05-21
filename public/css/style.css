@@ -60,3 +60,14 @@ body input{
     color: #6571f3;
     font-weight: bold;
 }
+
+/* posts, will need to be moved to a special css */
+
+.post{
+
+}
+
+.post-image{
+    border-radius: 0.2em;
+}
+
