@@ -2,6 +2,65 @@
 //packages
 const fs = require('fs')
 
+// database
+var sqlite3 = require('sqlite3')
+var db = new sqlite3.Database(':memory:')
+const model = require('./sql/model')
+const user = new model.Model("utilisateur", db)
+
+const crypto = require('crypto');
+
+const SECRET_PWD_KEY = 'jfrokhfigqzujfDHFJCKSYLOTIR8IOLU'
+function hash (secret) {
+  return crypto.createHmac('sha256', secret)
+    .update(SECRET_PWD_KEY)
+    .digest('hex');
+}
+
+db.serialize(function () {
+  db.run(fs.readFileSync('./sql/init/tables.sql', 'utf-8'))
+
+  var stmt = db.prepare("INSERT INTO utilisateur VALUES (NULL, ?, 'none', ?, ?)")
+
+  stmt.run("thimote", hash('pwd1'), 0)
+  stmt.run("thimote2", hash('pwd0'), 1)
+  
+user.objects.update(0, { perm:3 })
+})
+
+// Permission Count
+const perm_length = 1
+
+// permissions
+function permissionVal (arr) {
+  var v = 0
+  var d = 1
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i]) {
+      v += d
+    }
+
+    d *= 2
+  }
+
+  return v
+}
+
+function permission (val) {
+  var arr = []
+  var d = Math.pow(2, perm_length - 1)
+  for (var i = perm_length - 1; i >= 0; i --) {
+    if ((val % d) != val) {
+      val = val % d
+      arr.push(true)
+    } else {
+      arr.push(false)
+    }
+    d /= 2
+  }
+  return arr.reverse()
+}
+
 //express related packages
 const express = require('express')
 const session = require('express-session')
@@ -41,11 +100,23 @@ app.get('/', (req, res) => {
 app.post('/login/', (req, res) => {
 
   //check form data for passsword, if ok set session logged_in to true and redirect to root/home
-  if(req.body.password && req.body.password=="jeanjacques"){
+  if(req.body.password && req.body.username){
+    db.serialize(
+      function() {
+        user.objects.filter({ username:req.body.username, pwd:hash(req.body.password) }).all(function (err, all) {
+          if (all == undefined || all.length == 0) {
+            res.redirect('')
+            return
+          }
+          console.log(all)
+          req.session.logged_in = true
+          req.session.username = req.body.username
+          req.session.permission = all[0].perm
 
-    req.session.logged_in = true;
-    res.redirect("/")
-
+          res.redirect('/')
+        })
+      }
+    )
   }
 
   //if the password is wrong reload the page
@@ -56,7 +127,7 @@ app.post('/login/', (req, res) => {
 })
 
 app.get('/login/', (req, res) => {
-  //if logged in
+  // if logged in
   if (req.session.logged_in){
     res.redirect("/")
   }
@@ -75,6 +146,15 @@ app.get('/logout/', (req, res) => {
 //########## QCM ##########
 
 app.get('/qcm/create/', (req, res) => {
+  if (!req.session.logged_in) {
+    res.redirect('/')
+    return
+  }
+  if (!permission(req.session.permission)[0]) {
+    res.redirect('/')
+    return
+  }
+
   res.render("qcm/qcm-create.html")
 })
 app.get('/qcm/browse/', (req, res) => {
@@ -90,6 +170,15 @@ app.get('/qcm/browse/', (req, res) => {
 }) 
 
 app.post('/qcm/create', (req, res) => {
+  if (!req.session.logged_in) {
+    res.redirect('/')
+    return
+  }
+  if (!permission(req.session.permission)[0]) {
+    res.redirect('/')
+    return
+  }
+  
   qcmcreator.createObject(req.files['file'], req.body.text)//not sure if right method
 
   var qcm = qcmloader.QCMBuilder.fromLatex(latexsys.LATEX_QCM1)//ok here we parse the latex
