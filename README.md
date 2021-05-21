@@ -1,3 +1,8 @@
 # site
 
-This is the website of the lfa informatic club, depends on express, lfa-info-21/latex-utils and lfa-info-21/renderer-utils
+This is the website of the lfa tech club, it is made with node.js using the express framework.
+
+Packages used:
+* express
+* express-session
+* express-fileupload
