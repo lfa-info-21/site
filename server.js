@@ -5,12 +5,6 @@ const upload = require('express-fileupload')
 const app = express()
 const port = 3000
 
-//custom packages
-const latexsys = require('./qcm/latex')
-const qcmloader = require('./qcm/qcm')
-const qcmcreator = require('./qcm/qcm-loader')
-const qcmbrowser = require('./qcm/qcm-browser')
-
 //other packages
 const fs = require('fs')
 
@@ -35,7 +29,8 @@ app.use(session({ secret: 'idk youre supposed to put a secret here', cookie: { m
 
 // API
 const api = require('./api/api')
-const { path } = require('osenv')
+// QCM
+const qcm = require('./qcm/views')
 
 //##############################################################
 
@@ -95,60 +90,9 @@ app.get('/login/', (req, res) => {
   res.render('login.html', {})
 })
 
-//########## QCM ##########
-
-app.get('/qcm/create/', (req, res) => {
-  if (!req.session.logged_in) {
-    res.redirect('/')
-    return
-  }
-  if (!permission(req.session.permission)[0]) {
-    res.redirect('/')
-    return
-  }
-
-  res.render("qcm/qcm-create.html")
-})
-app.get('/qcm/browse/', (req, res) => {
-  var page = 0
-  if (req.query.page) {
-    page = Number(req.query.page)
-    if (page < 0) {
-      page = 0
-    }
-  }
-
-  res.render("qcm/qcm-browser.html", {"qcms":qcmbrowser.browse(page), 'page':page, 'max_page':qcmbrowser.pageCount()})
-}) 
-
-app.post('/qcm/create', (req, res) => {
-  if (!req.session.logged_in) {
-    res.redirect('/')
-    return
-  }
-  if (!permission(req.session.permission)[0]
-    && !permission(req.session.permission)[1]) {
-    res.redirect('/')
-    return
-  }
-  
-  qcmcreator.createObject(req.files['file'], req.body.text)//not sure if right method
-
-  var qcm = qcmloader.QCMBuilder.fromLatex(latexsys.LATEX_QCM1)//ok here we parse the latex
-  qcm.shuffle() //here we shuffle the questions randomly
-
-  res.render("qcm/qcm.html",{"qcm":qcm}) //SEND BAKK DAT BISH
-}) 
-
-app.get('/qcm/:qcm', (req, res) => {
-    var qcm = qcmcreator.getObject(req.params.qcm)
-
-    res.render("qcm/qcm.html",{"qcm":qcm})
-})
-
 app.use('/api', api.router)
+app.use('/qcm', qcm.router)
 
-//########## QCM END ##########
 
 //static file serving
 app.use(express.static('public'))

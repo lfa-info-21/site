@@ -26,7 +26,7 @@ function getObject(uuid) {
     return qcmloader.buildQcm(dt)
 }
 
-function createObject(file, name) {
+function createObject(file, name, author) {
     var data = file.data.toString('utf-8')
     
     var qcm = qcmloader.QCMBuilder.fromLatex(data)

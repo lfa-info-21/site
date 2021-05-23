@@ -2,6 +2,12 @@ var express = require('express')
 var router = express.Router()
 const fs = require('fs')
 
+//qcm packages
+const latexsys = require('../qcm/latex')
+const qcmloader = require('../qcm/qcm')
+const qcmcreator = require('../qcm/qcm-loader')
+const qcmbrowser = require('../qcm/qcm-browser')
+
 // database
 var sqlite3 = require('sqlite3')
 var db = new sqlite3.Database(':memory:')
@@ -88,7 +94,7 @@ function login(req, res) {
         }
 
         req.session.logged_in = true
-        req.session.perm_lvl = permission(dat[0])
+        req.session.perm_lvl = permission(dat[0].perm)
         req.session.username = username
         
         res.redirect('/')
@@ -99,6 +105,24 @@ function login(req, res) {
 function logout(req, res) {
     req.session.logged_in = false
     res.redirect('/')
+}
+
+function createQCM (req, res) {
+    if (!req.session.logged_in) {
+      res.redirect('/')
+      return
+    }
+    if (!req.session.perm_lvl[0] && !req.session.perm_lvl[1]) {
+      res.redirect('/')
+      return
+    }
+    
+    qcmcreator.createObject(req.files['file'], req.body.name, req.session.username)//not sure if right method
+  
+    var qcm = qcmloader.QCMBuilder.fromLatex(latexsys.LATEX_QCM1) //ok here we parse the latex
+    qcm.shuffle() //here we shuffle the questions randomly
+  
+    res.redirect(`/qcm/${qcm.uuid}`)
 }
 
 //define all the routes and methods for devs
@@ -121,6 +145,17 @@ const api_routes = [
         "func":logout,
         "desc":"logout from an account",
         "params":{}
+    },
+    {
+        "name":"createQCM",
+        "path":"/qcm/create",
+        "METHOD":"POST",
+        "func":createQCM,
+        "desc":"create a QCM, needs admin or createQCM permissions",
+        "params":{
+            "FILE:file":"The latex file given for the QCM",
+            "name":"Name of the QCM",
+        }
     }
 ]
 

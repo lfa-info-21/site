@@ -35,7 +35,3 @@ We use SQLite as the base Database framework. But because SQL is a little bit of
 
 First of all you will need to import from api/sql/model the Model class and create a new instance of it
 with the first parameter which is the table name (from SQL file) and the second which is the database you are using, described in api/api. After that you will be able to do queryes, create object and update them
-
-### Updating a Model
-
-### Creating a Model

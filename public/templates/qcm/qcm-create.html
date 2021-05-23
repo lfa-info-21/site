@@ -5,9 +5,9 @@
     </head>
     <body>
 
-        <form method="POST" enctype="multipart/form-data">
+        <form action="/api/qcm/create" method="POST" enctype="multipart/form-data">
             <input type="file" name="file">
-            <input type="text" name="text" placeholder="Nom du QCM">
+            <input type="text" name="name" placeholder="Nom du QCM">
             <button type="submit">
                 Submit
             </button>
