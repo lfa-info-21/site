@@ -3,5 +3,5 @@ CREATE TABLE IF NOT EXISTS post
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     userid INTEGER,
     fpath VARCHAR(100),
-    FOREIGN KEY(userid) REFERENCES user(userid)
+    FOREIGN KEY(userid) REFERENCES user(id)
 );

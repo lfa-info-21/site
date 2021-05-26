@@ -4,6 +4,5 @@ CREATE TABLE IF NOT EXISTS user
     username VARCHAR(100),
     email VARCHAR(255),
     pwd VARCHAR(64),
-    perm INT,
     unique(username)
 );

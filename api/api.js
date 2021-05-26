@@ -12,8 +12,33 @@ const qcmbrowser = require('../qcm/qcm-browser')
 var sqlite3 = require('sqlite3')
 var db = new sqlite3.Database(':memory:')
 const model = require('./sql/model')
-const user = new model.Model("user", db)
-const post = new model.Model("post", db)
+const user = new model.Model(
+    "user", 
+    [], 
+    { id:"primkey", username:"string", pwd:"string", email:"string" },
+    db
+)
+const post = new model.Model(
+    "post", 
+    [new model.ForeignKey("userid", user)], 
+    { id:"primkey", userid:"int", fpath:"string" }, 
+    db
+)
+const group = new model.Model(
+    "permgroup", 
+    [], 
+    { id:"primkey", grpname:"string" }, 
+    db
+)
+const grouplinker = new model.Model(
+    "permlinker", 
+    [
+        new model.ForeignKey("userid", user),
+        new model.ForeignKey("groupid", group)
+    ],
+    { id:"primkey", userid:"int", groupid:"int" }, 
+    db
+)
 const crypto = require('crypto');
 
 const SECRET_PWD_KEY = 'jfrokhfigqzujfDHFJCKSYLOTIR8IOLU'
@@ -23,57 +48,48 @@ function hash (secret) {
     .digest('hex');
 }
 
+const GROUPS = [
+    'admin',
+    'createQCM'
+]
+function generateGroups () {
+    group.objects.all(function (err, dat) {
+        if (err)
+            return
+        
+        dat = dat.map(function call(x) {return x.grpname})
+        GROUPS.forEach(function call(grp) {
+            if (!dat.includes(grp)) {
+                group.objects.create( { grpname:grp } )
+            }
+        })
+    })
+}
+
 db.serialize (function callback () {
     db.run(fs.readFileSync("./api/sql/init/user.sql", 'utf-8'))
     db.run(fs.readFileSync("./api/sql/init/post.sql", 'utf-8'))
+    db.run(fs.readFileSync("./api/sql/init/permissions/group.sql", 'utf-8'))
+    db.run(fs.readFileSync("./api/sql/init/permissions/grouplinker.sql", 'utf-8'))
 
     user.objects.create( {
         username: "thimote",
-        pwd: hash("pwd0"),
-        perm: 0,
+        pwd: hash("pwd0")
+    } )
+    user.objects.create( {
+        username: "thimote2",
+        pwd: hash("pwd1")
     } )
 
     post.objects.create( {
         fpath: 'name.md',
         userid: 1,
     })
+
+    generateGroups()
+    
+    grouplinker.objects.create( { userid:1, groupid:1 } )
 })
-
-// Permission Count
-const perm_length = 2
-
-// permissions
-// [isAdmin, canCreateQCM]
-function permissionVal (arr) {
-  var v = 0
-  var d = 1
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i]) {
-      v += d
-    }
-
-    d *= 2
-  }
-
-  return v
-}
-
-function permission (val) {
-  var arr = []
-  var d = Math.pow(2, perm_length - 1)
-  for (var i = perm_length - 1; i >= 0; i --) {
-    if ((val % d) != val) {
-      val = val % d
-      arr.push(true)
-    } else {
-      arr.push(false)
-    }
-    d /= 2
-  }
-  return arr.reverse()
-}
-
-
 
 //login
 function login(req, res) {
@@ -85,17 +101,20 @@ function login(req, res) {
     var pwd = req.body.password
     var hashed = hash(req.body.password)
 
-    console.log(hashed)
-
-    user.objects.filter( { username:username, pwd:hashed } ).all(function (err, dat) {
+    user.objects.filter( { username:username, pwd:hashed } ).all(async function (err, dat) {
         if (dat == undefined || dat.length != 1) {
             res.redirect('/login')
             return
         }
 
         req.session.logged_in = true
-        req.session.perm_lvl = permission(dat[0].perm)
         req.session.username = username
+        req.session.userid = dat[0].id
+        req.session.userdata = dat[0]
+        var dat = await grouplinker.objects.filter( { userid:dat[0].id } ).asyncAll()
+        req.session.permissions = dat.map(function call(x) {
+            return x.$groupid.grpname
+        })
         
         res.redirect('/')
     })
@@ -112,7 +131,7 @@ function createQCM (req, res) {
       res.redirect('/')
       return
     }
-    if (!req.session.perm_lvl[0] && !req.session.perm_lvl[1]) {
+    if (!req.session.permissions.includes('admin') && !req.session.permissions.includes('createQCM')) {
       res.redirect('/')
       return
     }

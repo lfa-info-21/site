@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Website</title>
+        <%- include('../head.html'); -%>
+    </head>
+
+    <body>
+        <div id="content">
+            <ul>
+            <% query.forEach((el) => { %>
+                <li><a href="/admin/m/<%= model.table_name %>/o/<%= el.id %>"><%= model.toStr(el) %></a></li>
+            <% }); %>
+            </ul>
+        </div>
+    </body>
+
+</html>

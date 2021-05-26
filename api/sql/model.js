@@ -1,20 +1,83 @@
 const { isString } = require("util")
-const { threadId } = require("worker_threads")
+
+class ForeignKey {
+    constructor (name, model) {
+        this.model = model
+        this.name = name
+    }
+}
 
 class SQLQueryer {
-    constructor (tname, sql, db) {
+    constructor (tname, sql, db, model, limit, offset) {
         this.sql = sql
         this.tname = tname
         this.db = db
+        this.model = model
+        this.limit = limit
+        this.offset = offset
+    }
+    async buildForeign (dat, foreign) {
+        var id = dat[foreign.name]
+
+        var objs = await foreign.model.objects.filter({ id:id }).asyncAll()
+
+        var obj = undefined
+        if (objs.length > 0) {
+            obj = objs[0]
+        }
+
+        return obj
+    }
+    async buildForeigns (data) {
+        for (var i = 0; i < this.model.foreign_keys.length; i++) {
+            data["$"+this.model.foreign_keys[i].name] = await this.buildForeign(data, this.model.foreign_keys[i])
+        }
+        return data
+    }
+    buildOffset() {
+        if (this.offset == "") {
+            return ""
+        }
+        return ` OFFSET ${this.offset}`
+    }
+    buildLimit() {
+        if (this.limit == "") {
+            return ""
+        }
+        return ` LIMIT ${this.limit}${this.buildOffset()}`
     }
     all (callback) {
-       this.db.all(this.sql, callback) 
+        var thisObj = this
+       this.db.all(this.sql+this.buildLimit(), async function (err, dat) {
+           if (err) {
+               callback(err, dat)
+               return
+           }
+           for (var i = 0; i < dat.length; i++) {
+               dat[i] = await thisObj.buildForeigns(dat[i])
+           }
+           callback(err, dat)
+       })
+    }
+    setLimit(value) {
+        this.limit = value
+        return this
+    }
+    setOffset(value) {
+        this.offset = value
+        return this
     }
     update (index, values, callback) {
+        if (index < 0) {
+            return
+        }
         var thisObj = this
         this.all(function (err, all) {
-            if (all == undefined || all.length == 0)
+            console.log(all)
+            if (err || all == undefined || all.length <= 0 || all.length <= index) {
+                console.log(err)
                 return
+            }
             
             var d = all[index]
 
@@ -34,6 +97,7 @@ class SQLQueryer {
             }
             
             var all = upd_template+templ_mod+filt_template
+            console.log(all)
 
             thisObj.db.run(all, callback)
         })
@@ -64,7 +128,7 @@ class SQLQueryer {
         return filter
     }
     filter (filters) {
-        return new SQLQueryer(this.tname, this.sql + " " + this.buildFilters(filters), this.db)
+        return new SQLQueryer(this.tname, this.sql + " " + this.buildFilters(filters), this.db, this.model, this.limit, this.offset)
     }
     asyncAll () {
         return new Promise(resolve => {
@@ -90,11 +154,29 @@ class SQLQueryer {
 }
 
 class Model {
-    constructor (table_name, db) {
-        this.objects = new SQLQueryer(table_name, `SELECT * FROM ${table_name}`, db)
+    constructor (table_name, foreign_keys, objects, db) {
+        models_created[table_name] = this
+
+        this.columns = objects
+        this.table_name = table_name
+        this.foreign_keys = foreign_keys
+        this.objects = new SQLQueryer(table_name, `SELECT * FROM ${table_name}`, db, this, "", "")
+    }
+    setToString(func) {
+        this.toStr = func
+    }
+    toStr(obj) {
+        return `<${this.table_name} id=${obj.id}>`
     }
 }
 
+var models_created = {}
+function models () {
+    return models_created
+}
+
 module.exports = {
-    Model: Model
+    Model: Model,
+    ForeignKey: ForeignKey,
+    models: models,
 }

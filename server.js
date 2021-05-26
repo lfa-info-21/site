@@ -31,6 +31,8 @@ app.use(session({ secret: 'idk youre supposed to put a secret here', cookie: { m
 const api = require('./api/api')
 // QCM
 const qcm = require('./qcm/views')
+// ADMIN
+const admin = require('./admin/views')
 
 //##############################################################
 
@@ -90,6 +92,7 @@ app.get('/login/', (req, res) => {
   res.render('login.html', {})
 })
 
+app.use('/admin', admin.router)
 app.use('/api', api.router)
 app.use('/qcm', qcm.router)
 

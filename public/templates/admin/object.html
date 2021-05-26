@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Website</title>
+        <%- include('../head.html'); -%>
+    </head>
+
+    <body>
+        <div id="content">
+            <form action="<%= url %>/update" method="POST">
+                <% Object.entries(model.columns).forEach((el) => {if(el[1] != "primkey") { %>
+                    <%= el[0] %> : <input name="<%= el[0] %>" type="<% if (el[1] == "int") { %>number<% } else {%>text<% } %>" value="<%= object[el[0]] %>"><br>
+                <% }}); %>
+                <button type="submit">Modifier</button>
+            </form>
+        </div>
+    </body>
+
+</html>
