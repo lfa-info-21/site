@@ -49,7 +49,9 @@ router.get('/m/:model', function admin_mhome(req, res) {
 })
 
 router.get('/m/:model/o/:id', function admin_mhome(req, res) {
-    
+    if (check_rights(req, res)) {
+        return
+    }
 
     var actmodel = get_models()[req.params.model]
     var id = Number(req.params.id)
@@ -66,13 +68,13 @@ router.get('/m/:model/o/:id', function admin_mhome(req, res) {
 })
 
 router.post('/m/:model/o/:id/update', function admin_mhome(req, res) {
+    if (check_rights(req, res)) {
+        return
+    }
+    
     var actmodel = get_models()[req.params.model]
     var id = Number(req.params.id)
-    console.log(req.body)
-    actmodel.objects.filter({ id:id }).update(0, req.body, function call(err, dat) {
-        console.log(err)
-        console.log(dat)
-    })
+    actmodel.objects.filter({ id:id }).update(0, req.body, function call(err, dat) {})
 
     res.redirect(`/admin/m/${req.params.model}/o/${id}`)
 })

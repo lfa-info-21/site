@@ -73,7 +73,6 @@ class SQLQueryer {
         }
         var thisObj = this
         this.all(function (err, all) {
-            console.log(all)
             if (err || all == undefined || all.length <= 0 || all.length <= index) {
                 console.log(err)
                 return
@@ -97,7 +96,6 @@ class SQLQueryer {
             }
             
             var all = upd_template+templ_mod+filt_template
-            console.log(all)
 
             thisObj.db.run(all, callback)
         })
