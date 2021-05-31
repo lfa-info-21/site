@@ -62,7 +62,11 @@ app.get('/', async function (req, res) {
     
   })
 
-  res.render('main.html', {"logged_in":req.session.logged_in, "time_left":req.session.cookie.maxAge / 1000, "posts":posts})
+  res.render('index.html', {"logged_in":req.session.logged_in, "time_left":req.session.cookie.maxAge / 1000, "posts":posts})
+})
+
+app.get('/about', async function (req, res) {
+  res.render('about.html', {"logged_in":req.session.logged_in})
 })
 
 //mardown view
@@ -90,6 +94,12 @@ app.get('/md/:name/', (req, res) => {
 
 app.get('/login/', (req, res) => {
   res.render('login.html', {})
+})
+app.get('/contact/', (req, res) => {
+  res.render('contact.html', {})
+})
+app.get('/post/', (req, res) => {
+  res.render('post.html', {})
 })
 
 app.use('/admin', admin.router)
