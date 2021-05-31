@@ -91,6 +91,16 @@ db.serialize (function callback () {
     grouplinker.objects.create( { userid:1, groupid:1 } )
 })
 
+// QCM Api
+
+class QcmApi {
+    // Get Qcm
+    get_qcm(req, res) {
+        res.send(JSON.parse(fs.readFileSync(`./qcm/data/${req.params.qcm}.json`).toString('utf-8').split("\"status\":true").join("\"status\":false")))
+    }
+}
+QCM_API = new QcmApi()
+
 //login
 function login(req, res) {
     if (!(req.body.username && req.body.password)) {
@@ -174,6 +184,16 @@ const api_routes = [
         "params":{
             "FILE:file":"The latex file given for the QCM",
             "name":"Name of the QCM",
+        }
+    },
+    {
+        "namme":"QCM.get",
+        "path":"/qcm/:qcm",
+        "METHOD":"GET",
+        "func":QCM_API.get_qcm,
+        "desc":"gets the qcm from an id",
+        "params":{
+            "URL:qcm":"Qcm Id"
         }
     }
 ]

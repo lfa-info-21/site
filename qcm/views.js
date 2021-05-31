@@ -20,7 +20,7 @@ const qcmbrowser = require('./qcm-browser')
       res.redirect('/')
       return
     }
-    if (!req.session.perm_lvl[0] && !req.session.perm_lvl[1]) {
+    if (!req.session.permissions.includes("admin")) {
       res.redirect('/')
       return
     }
@@ -41,9 +41,11 @@ const qcmbrowser = require('./qcm-browser')
   
   router.get('/:qcm', (req, res) => {
       var qcm = qcmcreator.getObject(req.params.qcm)
-  
+
       res.render("qcm/qcm.html",{"qcm":qcm})
+      // trouver un qcm et remplacer son json
   })
+  
   
 
 
