@@ -195,7 +195,7 @@ const api_routes = [
         }
     },
     {
-        "namme":"QCM.get",
+        "name":"QCM.get",
         "path":"/qcm/:qcm",
         "METHOD":"GET",
         "func":QCM_API.get_qcm,
