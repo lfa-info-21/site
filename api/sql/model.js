@@ -67,6 +67,23 @@ class SQLQueryer {
         this.offset = value
         return this
     }
+    delete (index, callback) {
+        var thisObj = this
+        this.all(function (err, all) {
+            if (err || all == undefined || all.length <= 0 || all.length <= index) {
+                return
+            }
+
+            var d = all[index]
+
+            if (d == undefined) {
+                return
+            }
+
+            var sql = `DELETE FROM ${thisObj.model.table_name} WHERE id=${d.id}`
+            thisObj.db.run(sql, callback) 
+        })
+    }
     update (index, values, callback) {
         if (index < 0) {
             return
@@ -74,7 +91,6 @@ class SQLQueryer {
         var thisObj = this
         this.all(function (err, all) {
             if (err || all == undefined || all.length <= 0 || all.length <= index) {
-                console.log(err)
                 return
             }
             
@@ -102,6 +118,9 @@ class SQLQueryer {
     }
     create (values, callback) {
         var dt = `INSERT INTO ${this.tname} (${Object.keys(values).join(', ')}) VALUES (${Object.values(values).map(this.buildFilter).join(', ')})`
+        if (Object.keys(values).length == 0) {
+            dt = `INSERT INTO ${this.tname} DEFAULT VALUES`
+        }
         
         this.db.run(dt, callback)
     }
