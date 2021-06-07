@@ -10,6 +10,7 @@ const qcmbrowser = require('../qcm/qcm-browser')
 
 // database
 var sqlite3 = require('sqlite3')
+// Maybe move it from memory to ./db.sqlite3
 var db = new sqlite3.Database(':memory:')
 const model = require('./sql/model')
 const user = new model.Model(
