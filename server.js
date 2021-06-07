@@ -10,7 +10,11 @@ const fs = require('fs')
 
 //packages for markdown rendering
 const matter = require('gray-matter');
-const md = require('markdown-it');
+
+const md = require('markdown-it')();
+const mk = require('markdown-it-katex');
+
+md.use(mk);
 
 //for uploading files
 app.use(upload())
@@ -80,9 +84,8 @@ app.get('/md/:name/', (req, res) => {
     const file = matter.read(__dirname + '/public/articles/' + name);
 
     // use markdown-it to convert content to HTML
-    markDownFile = md()
     let content = file.content;
-    var result = markDownFile.render(content);
+    var result = md.render(content);
   
     res.render("article", {
       post: result,

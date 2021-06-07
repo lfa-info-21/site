@@ -8,6 +8,7 @@ Packages used:
 * express-fileupload
 * gray-matter (for reading the md files of our articles)
 * markdown-it (for rendering the articles)
+* markdown-it-katex ( tex rendering plugin )
 
 ## Articles:
 
