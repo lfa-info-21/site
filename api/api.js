@@ -97,7 +97,14 @@ db.serialize (function callback () {
 class QcmApi {
     // Get Qcm
     get_qcm(req, res) {
-        res.send(JSON.parse(fs.readFileSync(`./qcm/data/${req.params.qcm}.json`).toString('utf-8').split("\"status\":true").join("\"status\":false")))
+        res.send( // Send following JSON data
+            JSON.parse( // Parse the following data to JSON
+                fs.readFileSync(`./qcm/data/${req.params.qcm}.json`) // Read File
+                    .toString('utf-8') // Transform Buffer into String
+                    .split("\"status\":true") // Remove status that are true
+                    .join("\"status\":false") // Replace them by false statuses
+            )
+        )
     }
 }
 QCM_API = new QcmApi()
