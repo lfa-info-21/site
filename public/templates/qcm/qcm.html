@@ -6,18 +6,10 @@
     </head>
     <body>
 
-        <% qcm.questions.forEach(function (question) { %>
+        <div id="qcm-container">
+            
+        </div>
 
-        Name : <%= question.question %><br>
-        <% question.answers.forEach(function (answer) { %>
-        
-            <label class="switch">
-                <input type="checkbox">
-                <span class="slider round"></span>
-            </label>Reponse : <%= answer.answer %><br>
-        <% }); %>
-        <br>
-
-        <% }); %>
+        <script src="/js/qcm-load.js"></script>
     </body>
 </html>
