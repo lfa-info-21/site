@@ -106,6 +106,24 @@ class QcmApi {
             )
         )
     }
+    // Create QCM
+    create_qcm (req, res) {
+        if (!req.session.logged_in) {
+          res.redirect('/')
+          return
+        }
+        if (!req.session.permissions.includes('admin') && !req.session.permissions.includes('createQCM')) {
+          res.redirect('/')
+          return
+        }
+        
+        qcmcreator.createObject(req.files['file'], req.body.name, req.session.username)//not sure if right method
+      
+        var qcm = qcmloader.QCMBuilder.fromLatex(latexsys.LATEX_QCM1) //ok here we parse the latex
+        qcm.shuffle() //here we shuffle the questions randomly
+      
+        res.redirect(`/qcm/${qcm.uuid}`)
+    }
 }
 QCM_API = new QcmApi()
 
@@ -144,24 +162,6 @@ function logout(req, res) {
     res.redirect('/')
 }
 
-function createQCM (req, res) {
-    if (!req.session.logged_in) {
-      res.redirect('/')
-      return
-    }
-    if (!req.session.permissions.includes('admin') && !req.session.permissions.includes('createQCM')) {
-      res.redirect('/')
-      return
-    }
-    
-    qcmcreator.createObject(req.files['file'], req.body.name, req.session.username)//not sure if right method
-  
-    var qcm = qcmloader.QCMBuilder.fromLatex(latexsys.LATEX_QCM1) //ok here we parse the latex
-    qcm.shuffle() //here we shuffle the questions randomly
-  
-    res.redirect(`/qcm/${qcm.uuid}`)
-}
-
 //define all the routes and methods for devs
 const api_routes = [
     {
@@ -184,10 +184,10 @@ const api_routes = [
         "params":{}
     },
     {
-        "name":"createQCM",
+        "name":"QCM.create",
         "path":"/qcm/create",
         "METHOD":"POST",
-        "func":createQCM,
+        "func":QCM_API.create_qcm,
         "desc":"create a QCM, needs admin or createQCM permissions",
         "params":{
             "FILE:file":"The latex file given for the QCM",
