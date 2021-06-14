@@ -99,6 +99,17 @@ class QcmApi {
     get_qcm(req, res) {
         res.send(JSON.parse(fs.readFileSync(`./qcm/data/${req.params.qcm}.json`).toString('utf-8').split("\"status\":true").join("\"status\":false")))
     }
+    browse_qcm(req,res){
+            var page = 0
+            if (req.query.page) {
+              page = Number(req.query.page)
+              if (page < 0) {
+                page = 0
+              }
+            }
+           
+            res.send({"qcms":qcmbrowser.browse(page), 'page':page, 'max_page':qcmbrowser.pageCount()})
+          }
 }
 QCM_API = new QcmApi()
 
@@ -185,6 +196,16 @@ const api_routes = [
         "params":{
             "FILE:file":"The latex file given for the QCM",
             "name":"Name of the QCM",
+        }
+    },
+    {
+        "name":"browseQCMS",
+        "path":"/browse/qcm",
+        "METHOD":"GET",
+        "func":QCM_API.browse_qcm,
+        "desc":"browse qcms",
+        "params":{
+            "page":"Number of the page to browse",
         }
     },
     {

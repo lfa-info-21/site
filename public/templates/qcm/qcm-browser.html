@@ -4,15 +4,23 @@
         <%- include('../head/head.html'); -%>
     </head>
     <body>
-        <% if( page > 0) { %>
-        <a href='/qcm/browse/?page=<%= page-1 %>'>Page précédente</a>
-        <% } %>
-        <% if( page < max_page) { %>
-        <a href='/qcm/browse/?page=<%= page %>'>Page suivante</a>
-        <% } %>
+       
 
-        <% qcms.forEach(function (qcm) { %>
-            <a href="/qcm/<%= qcm.uuid %>">Nom du qcm : <%= qcm.name %></a><br>
-        <% }); %>
+
     </body>
+    <script>
+        let API_URL = "/api/";
+        console.log(API_URL);
+        let response;
+        (async()=>{
+            console.log("Trying to fetch")
+            response = await fetch(API_URL + "browse/qcm");
+            qcms = await response.json();
+            qcms = qcms.qcms;
+            qcms.forEach(qcm => {
+                let el = document.createElement("a", {href:"/qcm/"+qcm.uuid});
+                document.body.appendChild(el);
+            });
+        })()
+    </script>
 </html>

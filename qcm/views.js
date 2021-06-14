@@ -35,8 +35,8 @@ const qcmbrowser = require('./qcm-browser')
         page = 0
       }
     }
-  
-    res.render("qcm/qcm-browser.html", {"qcms":qcmbrowser.browse(page), 'page':page, 'max_page':qcmbrowser.pageCount()})
+   
+    res.render("qcm/qcm-browser.html",{})
   })  
   
   router.get('/:qcm', (req, res) => {
