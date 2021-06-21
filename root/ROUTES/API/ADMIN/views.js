@@ -1,6 +1,6 @@
 
 
-const model = require('./database/sql/model')
+const model = require('../../../database/sql/model')
 const get_models = model.models
 
 var express = require('express')

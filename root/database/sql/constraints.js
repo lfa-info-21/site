@@ -25,3 +25,8 @@ class ForeignField extends ConstraintField {
         return `FOREIGN KEY(${name}) REFERENCES ${this.ref} ${this.cl}`
     }
 }
+
+module.exports = {
+    UniqueField: UniqueField,
+    ForeignField: ForeignField
+}

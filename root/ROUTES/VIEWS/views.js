@@ -7,9 +7,9 @@ const router = Router();
 
 // ADMIN ROUTES
 
-/*const mdRoute = require("../admin/md.js");
+const adminRoute = require("../API/ADMIN/views.js");
 
-router.use("/admin", mdRoute);*/
+router.use("/admin", adminRoute.router);
 
 // QCM ROUTES
 
