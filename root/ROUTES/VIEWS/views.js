@@ -5,6 +5,12 @@ const Router = express.Router
 
 const router = Router();
 
+// ADMIN ROUTES
+
+/*const mdRoute = require("../admin/md.js");
+
+router.use("/admin", mdRoute);*/
+
 // QCM ROUTES
 
 // router.use("/qcm", qcmRoute)

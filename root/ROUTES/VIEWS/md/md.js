@@ -12,13 +12,15 @@ const router = express.Router();
 const article_dir = path.join( __dirname, '/ARTICLES/')
 
 //mardown view
-router.get('/md/:name/', (req, res) => {
+router.get('/md/:name', (req, res) => {
+    console.log("fize")
     var name = req.params.name
     if (!name.endsWith(".md")){
         name= name+".md"
     }
 
     // read the markdown file
+    console.log(path.join(article_dir, name))
     const file = matter.read(path.join(article_dir, name));
 
     // use markdown-it to convert content to HTML
