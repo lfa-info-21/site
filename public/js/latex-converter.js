@@ -185,7 +185,7 @@ function convert_qcm() {
         let rstr = html.substr(match.mstart, length);
 
        // html = html.replace(rstr, get_img(match.str))
-        if (LATEX_CODCOGS_ENABLED)
+        if (LATEX_CODECOGS_ENABLED)
             html = html.replace(rstr, get_img(match.str))
     }
     document.getElementById("qcm-container").innerHTML = html;
@@ -194,5 +194,5 @@ function convert_qcm() {
 
 
 
-LATEX_CODCOGS_ENABLED = true
+LATEX_CODECOGS_ENABLED = true
 
