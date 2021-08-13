@@ -116,8 +116,12 @@ class QcmApi {
           res.redirect('/')
           return
         }
+
+        let cat_arr = ["Mathématique", "Informatique", "Autre"]
+        let categoryId = cat_arr.indexOf(req.body.category)
+        let category = cat_arr[Math.max(0, categoryId)]
         
-        qcmcreator.createObject(req.files['file'], req.body.name, req.session.username)//not sure if right method
+        qcmcreator.createObject(req.files['file'], req.body.name, req.session.username, category)//not sure if right method
       
         var qcm = qcmloader.QCMBuilder.fromLatex(latexsys.LATEX_QCM1) //ok here we parse the latex
         qcm.shuffle() //here we shuffle the questions randomly

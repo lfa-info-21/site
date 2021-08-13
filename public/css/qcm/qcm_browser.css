@@ -11,6 +11,7 @@ body {
     margin: 0;
     padding: 0;
     border: 1px solid #ccc;
+    background-color: #fff; 
     border-radius: .5em;
     width: 20em;
 }

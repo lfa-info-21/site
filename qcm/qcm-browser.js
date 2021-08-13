@@ -2,8 +2,12 @@
 const fs = require('fs')
 const qcm = require('./qcm')
 const PAGINATED_COUNT = 10
+const NEED_PAGINATION = false;
 
 function paginate (arr, page) {
+    if (!NEED_PAGINATION)
+        return arr
+
     var narr = []
     for (var i = page * PAGINATED_COUNT; i < Math.min((page + 1) * PAGINATED_COUNT, arr.length); i++) {
         narr.push(arr[i])
@@ -24,6 +28,9 @@ function browse (page) {
 }
 
 function pageCount () {
+    if (!NEED_PAGINATION)
+        return 1;
+
     var arr = fs.readdirSync('./qcm/data')
 
     return Math.floor(arr.length / PAGINATED_COUNT)

@@ -31,11 +31,12 @@ class Question {
 }
 
 class QCM {
-    constructor(questions, name, author, uuid) {
+    constructor(questions, name, author, uuid, category) {
         this.questions = questions
         this.name = name
         this.author = author
         this.uuid = uuid
+        this.category = category
 
         this.shuffle = function () {
             this.questions.forEach((el) => {
@@ -76,7 +77,7 @@ const buildQcm = function(json) {
     json['questions'].forEach((el) => {
         questions.push(buildQuestion(el))
     })
-    return new QCM(questions, json['name'], json['author'], json['uuid'])
+    return new QCM(questions, json['name'], json['author'], json['uuid'], json['category'])
 }
 
 const QCMBuilder = {
@@ -136,7 +137,7 @@ const QCMBuilder = {
             questions.push(new Question(rName, answers, Number(coef_cont.split(",")[0].split("=")[1])))
         })
 
-        return new QCM(questions, "", "", "").smooth()
+        return new QCM(questions, "", "", "", "").smooth()
     }
 }
 Object.freeze(QCMBuilder)

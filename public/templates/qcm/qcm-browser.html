@@ -2,17 +2,78 @@
 <html>
     <head>
         <%- include('../head/head.html'); -%>
+        <link href="/css/qcm/qcm_browser.css" rel="stylesheet"/>
+        <link href="/css/qcm/qcm.css" rel="stylesheet"/>
     </head>
     <body>
         <% if( page > 0) { %>
-        <a href='/qcm/browse/?page=<%= page-1 %>'>Page précédente</a>
+            <a href='/qcm/browse/?page=<%= page-1 %>'>Page précédente</a>
         <% } %>
+        <% for (let i = 0; i < max_page && i < 3; i++) {%>
+            <a href='/qcm/browse/?page=<%= i %>'>Page <%= i %></a>
+        <% } %>
+        <% if (max_page >= 6) {%><a href="#">...</a><% } %>
+        <% for (let i = 0; i < max_page; i++) {if (i >= 3 && i >= max_page - 3) {%>
+            <a href='/qcm/browse/?page=<%= i %>'>Page <%= i %></a>
+        <% }} %>
         <% if( page < max_page) { %>
-        <a href='/qcm/browse/?page=<%= page %>'>Page suivante</a>
+        <a href='/qcm/browse/?page=<%= page+1 %>'>Page suivante</a>
         <% } %>
 
-        <% qcms.forEach(function (qcm) { %>
-            <a href="/qcm/<%= qcm.uuid %>">Nom du qcm : <%= qcm.name %></a><br>
-        <% }); %>
+        <h2 style="padding-left: 20px; padding-bottom: 15px;">Accédez aux QCMs</h2>
+        
+        <div style="display: flex;">
+        <div>
+            <ul class="themes" id="qcm-category" style="margin-left: 20px;margin-top: 20px;">
+            </ul>
+        </div>
+        <div>
+            <ul class="themes" id="qcms" style="margin-left: 20px;margin-top: 20px;">
+                <% qcms.forEach(function (qcm) { %>
+                    <li><a href="/qcm/<%= qcm.uuid %>" category="<%= qcm.category %>"><%= qcm.name %></a>
+                        <!--<span class="badge">16</span>-->
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
+        </div>
+
+
+        <script>
+            let as = document.querySelector("ul#qcms").querySelectorAll("a")
+            let map = {};
+            let mapSec = {};
+            for (var i = 0; i < as.length; i++) {
+                if (map[as[i].getAttribute("category")] === undefined) {
+                    map[as[i].getAttribute("category")] = 1
+                    mapSec[as[i].getAttribute("category")] = ["<li>"+as[i].parentNode.innerHTML+"</li>"]
+                } else {
+                    map[as[i].getAttribute("category")] = map[as[i].getAttribute("category")] + 1
+                    mapSec[as[i].getAttribute("category")].push("<li>"+as[i].parentNode.innerHTML+"</li>")
+                }
+            }
+
+            Object.keys(map).forEach(key => {
+                document.querySelector("ul#qcm-category").innerHTML += `<li><a>${key}</a>
+                    <span class="badge">${map[key]}</span>
+                </li>`
+            });
+
+            document.querySelectorAll("ul#qcm-category li").forEach((element) => {
+                element.onclick = function click(event) {
+                    let target = event.target;
+                    let a = event.target.querySelector("a")
+
+                    let category = a.innerHTML
+                    let list = mapSec[category]
+
+                    document.querySelector("ul#qcms").innerHTML = list.join("")
+                    document.querySelector("ul#qcms").style.opacity = 1;
+                }
+            })
+
+            document.querySelector("ul#qcms").innerHTML = ""
+            document.querySelector("ul#qcms").style.opacity = 0;
+        </script>
     </body>
 </html>

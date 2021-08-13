@@ -185,7 +185,7 @@ function convert_qcm() {
         let rstr = html.substr(match.mstart, length);
 
        // html = html.replace(rstr, get_img(match.str))
-        html = html.replace(rstr, get_img(match.str))
+        html = html.replace(rstr, (match.str))
     }
     document.getElementById("qcm-container").innerHTML = html;
     extern = balanced_match
