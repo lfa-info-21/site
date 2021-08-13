@@ -24,11 +24,14 @@ const CHECKBOX = `
 `
 const RESPONSE_BEG = ""
 const RESPONSE_END = ""
-const ANSWER_BEGIN = `<li class="${LI_CLASS}">${CHECKBOX}${RESPONSE_BEG}Reponse : `
+const ANSWER_BEGIN = `<div class="userChoice"><input id="option1" name="option1" type="checkbox"/><label for="option1">`
+let index = 0;
 
 // Generate single answer HTML
 function build_answer(answer) {
-    return `${ANSWER_BEGIN}${answer.answer}${RESPONSE_END}</li>`
+    index += 1;
+    const OPTIONSTR = `option${index}`
+    return `${ANSWER_BEGIN.split("option1").join(OPTIONSTR)}${answer.answer}${RESPONSE_END}</label></div>`
 }
 
 // Generate HTML From answer list
@@ -38,10 +41,11 @@ function get_answers(question) {
 
 // Generate Question HTML based on a template
 function build_question(question) {
-    return `Name : ${question.question}<ul class="${UL_CLASS}">${get_answers(question)}</ul>`
+    return `<h2>${question.question}</h2>${get_answers(question)}`
 }
 
 // Set inner HTML of container to a map of data built from api json
 get_qcm(function (json) {
-    QUESTION_CONTAINER.innerHTML = json.questions.map(build_question).join('<br>')
+    QUESTION_CONTAINER.innerHTML = `<form class="form">${json.questions.map(build_question).join('<br>')}</form>`
+    convert_qcm()
 })
