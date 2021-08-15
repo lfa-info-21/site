@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <%- include('../head/head.html'); -%>
-        <title><%=qcm.name%></title>
-    </head>
-    <body>
 
-        <div id="qcm-container">
-            
-        </div>
+<head>
+    <%- include('../head/head.html'); -%>
+    <title><%=qcm.name%></title>
 
-        <script src="/js/qcm-load.js"></script>
-    </body>
+    <link href="/css/qcm.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div id="qcm-container">
+
+    </div>
+
+    <script src="/js/qcm-load.js"></script>
+    <script src="/js/latex-converter.js"></script>
+</body>
+
 </html>

@@ -1,0 +1,90 @@
+{
+    "questions": [{
+        "question": "Combien de chiffres différents faut-il pour écrire les décimales de 23/27?",
+        "answers": [{
+            "answer": "$1$",
+            "status": false
+        }, {
+            "answer": "$2$",
+            "status": false
+        }, {
+            "answer": "$4$",
+            "status": false
+        }, {
+            "answer": "$5$",
+            "status": false
+        }, {
+            "answer": "$3$",
+            "status": true
+        }],
+        "coefficient": 2
+    }, {
+        "question": "Le nombre $\\sqrt{720} $ est rationnel?",
+        "answers": [{
+            "answer": "Vrai",
+            "status": false
+        }, {
+            "answer": "Faux",
+            "status": true
+        }],
+        "coefficient": 4
+    }, {
+        "question": "La quantité $(1+\\sqrt{2} )/(1-\\sqrt{2} )$ est égale à",
+        "answers": [{
+            "answer": "$2-\\sqrt{3} $",
+            "status": false
+        }, {
+            "answer": "$-3-\\sqrt{3} $",
+            "status": false
+        }, {
+            "answer": "$-3+\\sqrt{3} $",
+            "status": false
+        }, {
+            "answer": "$-2-\\sqrt{3} $",
+            "status": true
+        }],
+        "coefficient": 4
+    }, {
+        "question": "On considère un carré $ABCD$ et on note $I$ le milieu du segment $[AB]$. Dans la base $\\overrightarrow{AB} $, $\\overrightarrow{AC} $ on note $a,b$ les coordonnées du vecteur $\\overrightarrow{IC} $. On a $a+2b=$",
+        "answers": [{
+            "answer": "3",
+            "status": false
+        }, {
+            "answer": "5/2",
+            "status": false
+        }, {
+            "answer": "2",
+            "status": false
+        }, {
+            "answer": "Aucune des autres réponses proposées n'est correcte",
+            "status": false
+        }, {
+            "answer": "3/2",
+            "status": true
+        }],
+        "coefficient": 4
+    }, {
+        "question": "On considère un carré $ABCD$ et on note $I,J,K,L$ les milieux des côtés $[AB]$, $[BC]$, $[CD]$ et $[DA]$. L'expression $\\overrightarrow{AJ} +\\overrightarrow{BK} +\\overrightarrow{CL} +\\overrightarrow{DI} $ est égale à",
+        "answers": [{
+            "answer": "$\\overrightarrow{IJ} $",
+            "status": false
+        }, {
+            "answer": "$\\overrightarrow{IK} $",
+            "status": false
+        }, {
+            "answer": "$\\overrightarrow{IL} $",
+            "status": false
+        }, {
+            "answer": "Aucune des réponses proposées n'est correcte",
+            "status": false
+        }, {
+            "answer": "$\\overrightarrow{0} $",
+            "status": true
+        }],
+        "coefficient": 4
+    }],
+    "name": "QCMTest",
+    "author": "Unknown",
+    "uuid": "q7838477399",
+    "category": "Autre"
+}

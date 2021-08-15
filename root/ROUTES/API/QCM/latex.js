@@ -1,14 +1,14 @@
 
-const utils = require('../utils')
+// const utils = require('../utils')
 const token_sys = require("./tokens")
 
 const TokenTypeEnums = {
 
-    "ANTISLASH":"ANTISLASH",
-    "NAME":"NAME",
-    "LEFTCURLYBRACKET":"LEFTCURLYBRACKET",
-    "RIGHTCURLYBRACKET":"RIGHTCURLYBRACKET",
-    "NOTOKEN":"NOTOKEN",
+    "ANTISLASH": "ANTISLASH",
+    "NAME": "NAME",
+    "LEFTCURLYBRACKET": "LEFTCURLYBRACKET",
+    "RIGHTCURLYBRACKET": "RIGHTCURLYBRACKET",
+    "NOTOKEN": "NOTOKEN",
 
 }
 Object.freeze(TokenTypeEnums)
@@ -21,7 +21,7 @@ class LatexLexer {
         this.chr_id = 0
         this.char = ' '
 
-        this.advance = function() {
+        this.advance = function () {
             this.chr_id += 1
             if (this.chr_id < this.string.length) {
                 this.char = this.string[this.chr_id]
@@ -29,7 +29,7 @@ class LatexLexer {
             }
             return false
         }
-        this.next = function() {
+        this.next = function () {
             if (this.chr_id + 1 < this.string.length) {
                 return this.string[this.chr_id + 1]
             }
@@ -65,37 +65,37 @@ class LatexLexer {
             return new token_sys.TokenType(str, TokenTypeEnums["NAME"])
         }
 
-        this.build = function() {
+        this.build = function () {
             this.chr_id = -1
 
             var tokens = [
 
             ]
 
-            while( this.advance() ) {
+            while (this.advance()) {
 
-                if ( this.isName(this.char) ) {
+                if (this.isName(this.char)) {
                     tokens.push(this.parseName())
-                } else if ( this.char == "\\" ) {
+                } else if (this.char == "\\") {
                     tokens.push(new token_sys.TokenType(undefined, TokenTypeEnums["ANTISLASH"]))
-                } else if ( this.char == "{" ) {
+                } else if (this.char == "{") {
                     tokens.push(new token_sys.TokenType(undefined, TokenTypeEnums["LEFTCURLYBRACKET"]))
-                } else if ( this.char == "}" ) {
+                } else if (this.char == "}") {
                     tokens.push(new token_sys.TokenType(undefined, TokenTypeEnums["RIGHTCURLYBRACKET"]))
-                } else if ( !this.isIgnore(this.char) ) {
-                    throw 'The character '+this.char+' is not usable in the current latex parser'
+                } else if (!this.isIgnore(this.char)) {
+                    throw 'The character ' + this.char + ' is not usable in the current latex parser'
                 }
 
             }
 
             return tokens
 
-        }   
+        }
     }
 }
 
 function include(arr, data) {
-    for (var i = 0; i < arr.length ; i++) {
+    for (var i = 0; i < arr.length; i++) {
         if (data == arr[i]) {
             return true
         }
@@ -103,8 +103,8 @@ function include(arr, data) {
     return false
 }
 
-function indexOf(arr, data, defaultvalue=-1) {
-    for (var i = 0; i < arr.length ; i++) {
+function indexOf(arr, data, defaultvalue = -1) {
+    for (var i = 0; i < arr.length; i++) {
         if (data == arr[i]) {
             return i
         }
@@ -114,7 +114,7 @@ function indexOf(arr, data, defaultvalue=-1) {
 
 class LatexInterpreter {
 
-    constructor (string) {
+    constructor(string) {
         this.lexer = new LatexLexer(string)
         this.tokens = this.lexer.build()
         this.token = new token_sys.TokenType(undefined, TokenTypeEnums["NOTOKEN"])
@@ -127,16 +127,16 @@ class LatexInterpreter {
             }
             return false
         }
-        this.isCorrect = function() {
+        this.isCorrect = function () {
             return this.token_id < this.tokens.length
         }
-        this.next = function() {
+        this.next = function () {
             if (this.token_id + 1 < this.tokens.length) {
                 return this.tokens[this.token_id + 1]
             }
             return undefined
         }
-        this.parseAntiSlashArgs = function() {
+        this.parseAntiSlashArgs = function () {
             var fargs = []
 
             while (this.token.type == TokenTypeEnums["LEFTCURLYBRACKET"]) {
@@ -167,7 +167,7 @@ class LatexInterpreter {
 
             return fargs
         }
-        this.parseAntiSlash = function() {
+        this.parseAntiSlash = function () {
             var cp_tok_id = this.token_id
 
             if (this.advance() && this.token.type == TokenTypeEnums["NAME"]) {
@@ -177,7 +177,7 @@ class LatexInterpreter {
                     this.token.value = string.substring(indexOf(string, ' ') + 1)
                     string = string.substring(0, indexOf(string, ' '))
                     this.token_id -= 1
-                    
+
                     return new ParameteredAntiSlash(string, [])
                 } else {
                     this.advance()
@@ -186,13 +186,13 @@ class LatexInterpreter {
             }
         }
 
-        this.start_build = function() {
+        this.start_build = function () {
             this.token_id = -1
             this.advance()
             this.tokens = this.lexer.build()
             return new ParameteredAntiSlash("body", this.build())
         }
-        this.build = function() {
+        this.build = function () {
             if (this.tokens.length == 0) {
                 throw 'Empty Latex found, not supported by base'
             }
@@ -211,7 +211,7 @@ class LatexInterpreter {
                     } else if (this.token.type == TokenTypeEnums["RIGHTCURLYBRACKET"]) {
                         break
                     } else {
-                        throw 'Unknown token found '+this.token.type
+                        throw 'Unknown token found ' + this.token.type
                     }
 
                     if (datas.length == 0 || (datas[datas.length - 1] instanceof ParameteredAntiSlash)) {
@@ -262,12 +262,12 @@ class ParameteredAntiSlash {
         this.name = name
         this.parameters = parameters
         this.parent = undefined
-        this.updateParamParents = function() {
-            for(var i = 0; i < this.parameters.length; i++) {
+        this.updateParamParents = function () {
+            for (var i = 0; i < this.parameters.length; i++) {
                 if (this.parameters[i] instanceof ParameteredAntiSlash) {
                     this.parameters[i].parent = this
                 } else if (this.parameters[i] instanceof Array) {
-                    for(var j = 0; j < this.parameters[i].length; j++) {
+                    for (var j = 0; j < this.parameters[i].length; j++) {
                         if (this.parameters[i][j] instanceof ParameteredAntiSlash) {
                             this.parameters[i][j].parent = this
                         }
@@ -287,7 +287,7 @@ class ParameteredAntiSlash {
         this.checkParameters = function (object, param) {
             if (object instanceof ParameteredAntiSlash &&
                 object.name == param.name) {
-                for (var jindex = 0; jindex < param.parameters.length; jindex ++) {
+                for (var jindex = 0; jindex < param.parameters.length; jindex++) {
                     if (!this.checkParameter(object, param.parameters[jindex])) {
                         return false
                     }
@@ -322,15 +322,15 @@ class ParameteredAntiSlash {
 
             var nextString = ""
             if (pointIndex != -1) {
-                nextString = string.substring(pointIndex+1)
+                nextString = string.substring(pointIndex + 1)
             }
 
             for (var sj = 0; sj < strs.length; sj++) {
                 var str = strs[sj]
 
-                var str_body = new LatexInterpreter('\\'+str).start_build()
+                var str_body = new LatexInterpreter('\\' + str).start_build()
                 if (str_body.parameters.length != 1) {
-                    throw 'Expected one name separated by points, got '+parameters.length
+                    throw 'Expected one name separated by points, got ' + parameters.length
                 }
 
                 var parameter = str_body.parameters[0]
@@ -482,9 +482,9 @@ $\\longleftarrow{}$ codez votre numéro d'élève ci-contre, et écrivez votre n
 `
 
 module.exports = {
-    LATEX_QCM1:LATEX_QCM1,
-    LatexInterpreter:LatexInterpreter,
-    LatexBuilder:LatexBuilder,
-    LatexLexer:LatexLexer,
-    ParameteredAntiSlash:ParameteredAntiSlash 
+    LATEX_QCM1: LATEX_QCM1,
+    LatexInterpreter: LatexInterpreter,
+    LatexBuilder: LatexBuilder,
+    LatexLexer: LatexLexer,
+    ParameteredAntiSlash: ParameteredAntiSlash
 }

@@ -13,7 +13,7 @@ class Database {
 
         }
     }
-    createModel (table_name, keys) {
+    createModel(table_name, keys) {
         if (this.models[table_name]) {
             throw `The table ${table_name} has already been used in this database`
         }
@@ -22,10 +22,11 @@ class Database {
 
         var foreigns = []
 
+        var thisObj = this
         Object.entries(keys).forEach((val) => {
             val[1].cstr.filter((el) => (el instanceof cstr.ForeignField)).forEach((el) => {
-                foreigns.push(new model.ForeignKey(el.ref.replaceAll(")", "").split("(")[1], 
-                el.ref.replaceAll(")", "").split("(")[0]))
+                foreigns.push(new model.ForeignKey(el.ref.replaceAll(")", "").split("(")[1],
+                    el.ref.replaceAll(")", "").split("(")[0], thisObj))
             })
         })
 
@@ -43,15 +44,15 @@ class Database {
 
         this.models[table_name].push(this.genSql(table_name))
     }
-    genSql (table_name) {
+    genSql(table_name) {
         if (this.models[table_name] == undefined) {
             throw `The table ${table_name} does not exist`
         }
-        
+
         if (this.models[table_name].length != 4) {
             return false
         }
-    
+
         var L0 = `CREATE TABLE IF NOT EXISTS ${table_name} \n(\n`;
         var L1 = `${Object.entries(this.models[table_name][2]).map(
             (arr) => {
@@ -73,15 +74,15 @@ class Database {
         return `${L0}\n${L1},\n${L2}\n${L3}`
     }
     launchSql() {
-        Object.entries(this.models).forEach((val)=>{
+        Object.entries(this.models).forEach((val) => {
             this.db.run(val[1][4])
         })
     }
 }
 
 module.exports = {
-    Database:Database,
-    model:model,
-    fields:fields,
-    cstr:cstr
+    Database: Database,
+    model: model,
+    fields: fields,
+    cstr: cstr
 }

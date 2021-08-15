@@ -2,7 +2,7 @@
 const qcmloader = require('./qcm')
 const fs = require('fs')
 
-const genQcmUuidPrivate = function() {
+const genQcmUuidPrivate = function () {
     var s = ['q']
     for (var i = 0; i < 10; i++) {
         s.push((Math.floor(Math.random() * 10) % 10).toString())
@@ -12,8 +12,8 @@ const genQcmUuidPrivate = function() {
 
 const genQcmUuid = function () {
     var uuid = genQcmUuidPrivate()
-    
-    while(fs.existsSync('./qcm/data/'+uuid+'.json')) {
+
+    while (fs.existsSync('./qcm-data/' + uuid + '.json')) {
         uuid = genQcmUuidPrivate()
     }
 
@@ -21,18 +21,19 @@ const genQcmUuid = function () {
 }
 
 function getObject(uuid) {
-    var dt = JSON.parse(fs.readFileSync('./qcm/data/'+uuid+'.json', 'utf-8'))
+    var dt = JSON.parse(fs.readFileSync('./qcm-data/' + uuid + '.json', 'utf-8'))
 
     return qcmloader.buildQcm(dt)
 }
 
-function createObject(file, name, author) {
+function createObject(file, name, author, category) {
     var data = file.data.toString('utf-8')
-    
+
     var qcm = qcmloader.QCMBuilder.fromLatex(data)
     qcm.author = 'Unknown'
     qcm.name = name
     qcm.uuid = genQcmUuid()
+    qcm.category = category
 
     storeObject(qcm)
 
@@ -42,7 +43,7 @@ function createObject(file, name, author) {
 function storeObject(qcm) {
     var dt = JSON.stringify(qcm)
 
-    fs.writeFileSync('./qcm/data/'+qcm.uuid+'.json', dt)
+    fs.writeFileSync('./qcm-data/' + qcm.uuid + '.json', dt)
 }
 
 module.exports = {
