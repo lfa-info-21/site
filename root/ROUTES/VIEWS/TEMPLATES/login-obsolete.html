@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <%- include('head/head.html'); -%>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="content p-4 text-center box">
+
+        <div class="login-container container container-fluid">
+            <h1 id="title">Login</h1>
+            <h5>Log-In to view all the content.</h2>
+
+            <div class="input-container">
+                <form action="/api/login" method="POST">
+                    <div class="row">
+                        <input placeholder="username" type="text" id="username" name="username">
+                    </div>
+                    <div class="row pt-2">
+                        <input placeholder="password" type="password" id="password" name="password">
+                    </div>
+                    <div class="row pt-2">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
+          </div>
+        </div>
+        
+    </div>
+</body>
+</html>

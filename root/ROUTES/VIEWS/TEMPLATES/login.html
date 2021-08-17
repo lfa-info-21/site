@@ -1,32 +1,19 @@
 <!DOCTYPE html>
+
 <html>
-<head>
-    <title>Login</title>
-    <%- include('head/head.html'); -%>
-    <link rel="stylesheet" href="/css/login.css">
-</head>
-<body>
-    <div class="content p-4 text-center box">
+	<head>
+		<title>Connexion - Club info</title>
+		<link rel="icon" href="favicon.ico">
+		<link rel="stylesheet" type="text/css" href="STATIC/CSS/login.css"/>
+	</head>
 
-        <div class="login-container container container-fluid">
-            <h1 id="title">Login</h1>
-            <h5>Log-In to view all the content.</h2>
-
-            <div class="input-container">
-                <form action="/api/login" method="POST">
-                    <div class="row">
-                        <input placeholder="username" type="text" id="username" name="username">
-                    </div>
-                    <div class="row pt-2">
-                        <input placeholder="password" type="password" id="password" name="password">
-                    </div>
-                    <div class="row pt-2">
-                        <input type="submit" value="Submit">
-                    </div>
-                </form>
-          </div>
-        </div>
-        
-    </div>
-</body>
+	<body>
+		<form>
+			<h2><b>Connexion</b></h2>
+			<input type="text" name="username" placeholder="Nom d'utilisateur">
+			<input type="password" name="password" placeholder="Mot de passe">
+			<button>Connexion</button>
+			<p>Pas de compte ? <a href="sign_up.html">Créer un compte</a></p>
+		</form>
+	</body>
 </html>

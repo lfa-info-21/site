@@ -1,37 +1,69 @@
-body{
-    padding: 3em;
-    padding-left: 15em;
-    padding-right: 15em;
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 
+body {
+	padding: 0;
+	margin: 0;
+	background: url('img/design/login-bg.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
-.box {
-    display: flex;
-    flex-flow: column;
-    height: 100%;
+form {
+	font-family: 'Quicksand', sans-serif;
+	position: relative;
+	z-index: 1;
+	background: #fff;
+	opacity: 97%;
+	max-width: 250px;
+	margin: 200px auto 100px;
+	padding: 10px 45px 30px 45px;
+	text-align: center;
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+	border-radius: 10px;
 }
 
-.login-container{
-    background-color: #6571f3;
-    border-radius: 0.3em;
-    padding: 2em;
-    padding-left: 10em;
-    padding-right: 10em;
-    flex: 1 1 auto;
+form input {
+	outline: 0;
+	background: #f1f1f1;
+	border-radius: 15px;
+	width: 100%;
+	border: 0;
+	margin: 0 0 20px;
+	padding: 15px;
+	box-sizing: border-box;
+	font-size: 15px;
 }
 
-.input-container{
-    padding-left:3em;
-    padding-right:3em;
+form input:hover {
+	background-color: #e3d3f9;
 }
 
-.login-container input{
-    border: none;
-    background-color: #efdecd;
-    filter: none;
-    padding: 0.5em;
-    outline: none;
-    border-radius: 0.5em;
-    color: #6571f3;
-    font-weight: bold;
+form input:focus {
+	background-color: #e3d3f9;
+}
+
+form button {
+	cursor: pointer;
+	outline: 0;
+	border-radius: 20px;
+	background: #ae72cc;
+	width: 100%;
+	border: 0;
+	padding: 15px;
+	font-size: 15px;
+	color: #fff;
+}
+
+form button:hover, form button:active, form button:focus {
+	background-color: #7a2d9c;
+}
+
+a {
+	color: #9742bd;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a:hover, a:focus, a:active {
+	color: #ae72cc;
 }
