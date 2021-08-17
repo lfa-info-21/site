@@ -21,59 +21,65 @@
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <div class="site-heading">
                         <h1 id="page-title">Club info</h1>
-                        <span class="subheading">Un blog par les élèves du club informatique du Lycée Franco-allemand de Buc</span>
+                        <span class="subheading">Un blog par les élèves du club informatique du Lycée Franco-Allemand de Buc</span>
                     </div>
                 </div>
             </div>
         </div>
     </header>
     <!-- Main Content-->
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <!-- Post preview-->
-                <div class="post-preview">
-                    <a href="/qcm/browse">
-                        <h2 class="post-title">QCM de Mathématiques</h2>
-                        <h3 class="post-subtitle">Accédez à des QCMs variés et corrigés</h3>
-                    </a>
-                    <p class="post-meta">
-                        Mis en ligne par
-                        <a href="about.html">Club informatique</a>
-                        le 18/08/2021
+     <main class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <h2>Qui sommes-nous ?</h2>
+                    <p>Elèves en première au Lycée Franco-Allemand de Buc, nous avons formé le projet de créer un site destiné à tous ceux qui désirent s'entraîner aux matières scientifiques via des QCM et des exercices dédiés.<br>Vous cherchez à en apprendre plus sur le club ou découvrir les outils qu'il propose? <a href="post.html">C'est par ici !</a></p>
+                    <h2>Le club informatique en bref</h2>
+                    <p>Dans le cadre du Club info, nous nous intéressons également à la cryptographie 🤿 (Enigma, méthodes de chiffrement, etc.) et nous préparons au concours <a href="https://concours-alkindi.fr">Alkindi</a> (jusqu'à la seconde inclue)</p>
+                    <p>Nous nous entraînons à la programmation en Python 🐍 avec <a href="http://www.france-ioi.org/">France-IOI</a></li>
                     </p>
                 </div>
-                <!--
-                <hr class="my-4" />
-                <div class="post-preview">
-                    <a href="post.html">
-                        <h2 class="post-title">Projets open-source</h2>
-                    </a>
-                    <p class="post-meta">
-                        Mis en ligne par
-                        <a href="about.html">Club informatique</a>
-                        le jj/mm/aaaa
-                    </p>
-                </div>
-                <hr class="my-4" />-->
-                <div class="post-preview">
-                    <a href="https://itai.cf">
-                        <h2 class="post-title">Exercices d'entraînements</h2>
-                        <h3 class="post-subtitle">Des exercices générés automatiquement pour vous aider dans
-                            vos révisions !</h3>
-                    </a>
-                    <p class="post-meta">
-                        Mis en ligne par
-                        <a href="about.html">Club informatique</a>
-                        le 18/08/2021
-                    </p>
-                </div>
-                <!--<hr class="my-4" />
-                <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Voir
-                        tout →</a></div>-->
             </div>
         </div>
-    </div>
+    </main>
+    <div class="album py-5 bg-light">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card mb-6 box-shadow">
+            <a href="https://itai.cf"><img class="card-img-top" src="/img/design/qcm_post.jpg"
+                alt="QCM de mathématiques"></a>
+            <div class="card-body">
+              <h3 class="post-subtitle">QCM de Mathématiques</h3>  
+              <p class="card-text">Accédez à des QCMs variés et corrigés</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="https://itai.cf"><button type="button"
+                      class="btn btn-sm btn-outline-secondary">Lire</button></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card mb-6 box-shadow">
+            <a href="/qcm/browse"><img class="card-img-top" src="/img/design/entrainement_post.jpg"
+                alt="Entraînement"></a>
+            <div class="card-body">
+              <h3 class="post-subtitle">Entraînement</h3>  
+              <p class="card-text">Des exercices pour vos révisions</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="/qcm/browse">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Lire</button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>&nbsp;</p>
     <!-- Footer-->
     <%- include('footer.html') %>
     <!-- Bootstrap core JS-->
