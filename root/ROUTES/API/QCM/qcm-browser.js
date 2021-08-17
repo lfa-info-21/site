@@ -15,7 +15,7 @@ function paginate (arr, page) {
 }
 
 function browse (page) {
-    var arr = fs.readdirSync('./qcm/data')
+    var arr = fs.readdirSync('./qcm-data')
 
     arr = paginate(arr, page)
 

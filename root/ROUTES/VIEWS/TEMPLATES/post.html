@@ -7,7 +7,7 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
   <title>Club info</title>
-  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/img/design/favicon.ico" />
   <%- include('head/head.html') %>
 </head>
 
@@ -15,18 +15,13 @@
   <!-- Navigation-->
   <%- include('navbar.html') %>
   <!-- Page Header-->
-  <header class="masthead" style="background-image: url('/img/design/pencil-5459684_1280.png')">
+  <header class="masthead" style="background-image: url('/img/design/post_bg.jpg')">
     <div class="container position-relative px-4 px-lg-5">
       <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
           <div class="post-heading">
-            <h1>Exercices d'entraînement corrigés</h1>
-            <h2 class="subheading">Des exercices variés pour vous aider dans vos révisions</h2>
-            <span class="meta">
-              Mis en ligne par
-              <a href="about.html">Club informatique</a>
-              on August 24, 2021
-            </span>
+            <h1>Le Club info propose</h1>
+            <h2 class="subheading">des QCMs, des exercices variés et des articles autour des sciences</h2>
           </div>
         </div>
       </div>
@@ -37,27 +32,29 @@
     <div class="container">
 
       <div class="row">
-        <div class="col-md-4">
-          <div class="card mb-4 box-shadow">
-            <a href="https://itai.cf"><img class="card-img-top" src="/img/design/homework-2521144_1920.jpg"
-                alt="Card image cap"></a>
+        <div class="col-md-6">
+          <div class="card mb-6 box-shadow">
+            <a href="/qcm/browse"><img class="card-img-top" src="/img/design/qcm_post.jpg"
+                alt="QCM de mathématiques"></a>
             <div class="card-body">
-              <p class="card-text">Des exercices variés pour vous aider dans vos révisions</p>
+              <h3 class="post-subtitle">QCM de Mathématiques</h3>  
+              <p class="card-text">Accédez à des QCMs variés et corrigés</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="https://itai.cf"><button type="button"
+                  <a href="/qcm/browse"><button type="button"
                       class="btn btn-sm btn-outline-secondary">Lire</button></a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card mb-4 box-shadow">
-            <a href="/qcm/browse"><img class="card-img-top" src="/img/design/geometry-1044090_1920.jpg"
-                alt="Card image cap"></a>
+        <div class="col-md-6">
+          <div class="card mb-6 box-shadow">
+            <a href="/qcm/browse"><img class="card-img-top" src="/img/design/entrainement_post.jpg"
+                alt="Entraînement"></a>
             <div class="card-body">
-              <p class="card-text">Des QCMs de mathématiques corrigés</p>
+              <h3 class="post-subtitle">Entraînement</h3>  
+              <p class="card-text">Des exercices pour vos révisions</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a href="/qcm/browse">
@@ -68,24 +65,13 @@
             </div>
           </div>
         </div>
-        <!--<div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <a href="#jaipasencorelinkcamaisbon"><img class="card-img-top" src="/img/design/geometry-1044090_1920.jpg" alt="Card image cap"></a>
-                <div class="card-body">
-                  <p class="card-text">Des QCMs de mathématiques corrigés</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <a href="#jaipasencorelinkcamaisbon"><button type="button" class="btn btn-sm btn-outline-secondary">Lire</button></a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>-->
-        <div class="col-md-4">
-          <div class="card mb-4 box-shadow">
-            <a href=""><img class="card-img-top" src="/img/design/crypto-logo.jpg" alt="Card image cap"></a>
+        <p></p>
+        <div class="col-md-6">
+          <div class="card mb-6 box-shadow">
+            <a href=""><img class="card-img-top" src="/img/design/crypto_post.jpg" alt="Cryptographie"></a>
             <div class="card-body">
-              <p class="card-text">Des informations sur le chiffrage et l'analyse de fréquence</p>
+              <h3 class="post-subtitle">Cryptographie</h3> 
+              <p class="card-text">Le chiffrage et l'analyse de fréquence</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a href=""><button type="button" class="btn btn-sm btn-outline-secondary">Lire</button></a>
@@ -94,11 +80,12 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card mb-4 box-shadow">
-            <a href=""><img class="card-img-top" src="/img/design/geometry-1044090_1920.jpg" alt="Card image cap"></a>
+        <div class="col-md-6">
+          <div class="card mb-6 box-shadow">
+            <a href=""><img class="card-img-top" src="/img/design/vigenere_post.jpg" alt="Chiffrement"></a>
             <div class="card-body">
-              <p class="card-text">Découvrez le chiffrement de Vigenere</p>
+              <h3 class="post-subtitle">Vigenère</h3> 
+              <p class="card-text">Découvrez le chiffrement de Vigenère</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a href=""><button type="button" class="btn btn-sm btn-outline-secondary">Lire</button></a>
@@ -108,16 +95,8 @@
           </div>
         </div>
       </div>
-
+      <p>&nbsp;</p>
       </main>
-
-      <footer class="text-muted">
-        <div class="container">
-          <p class="float-right">
-            <a href="#">Back to top</a>
-          </p>
-        </div>
-      </footer>
 
       <!-- Bootstrap core JavaScript
     ================================================== -->

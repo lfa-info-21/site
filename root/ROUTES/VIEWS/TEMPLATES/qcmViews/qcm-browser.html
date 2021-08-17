@@ -9,17 +9,17 @@
 
 <body>
     <% if( page > 0) { %>
-    <a href='/qcm/browse/?page=<%= page-1 %>'>Page précédente</a>
+    <a href='/qcm/browse/?page=<%= page-1 %>'> < Page précédente &ndash; </a>
     <% } %>
     <% for (let i = 0; i < max_page && i < 3; i++) {%>
-    <a href='/qcm/browse/?page=<%= i %>'>Page <%= i %></a>
+    <a href='/qcm/browse/?page=<%= i %>'>Page <%= i %> &nbsp;</a>
     <% } %>
     <% if (max_page >= 6) {%><a href="#">...</a><% } %>
     <% for (let i = 0; i < max_page; i++) {if (i >= 3 && i >= max_page - 3) {%>
     <a href='/qcm/browse/?page=<%= i %>'>Page <%= i %></a>
     <% }} %>
     <% if( page < max_page) { %>
-    <a href='/qcm/browse/?page=<%= page+1 %>'>Page suivante</a>
+    <a href='/qcm/browse/?page=<%= page+1 %>'>Page suivante ></a>
     <% } %>
 
     <h2 style="padding-left: 20px; padding-bottom: 15px;">Accédez aux QCMs</h2>
