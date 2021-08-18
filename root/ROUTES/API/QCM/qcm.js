@@ -38,7 +38,7 @@ class QCM {
         this.uuid = uuid
         this.category = category
 
-        this.shuffle = function () {
+        this.shuffle = function (seed=0) {
             this.questions.forEach((el) => {
                 el.shuffle()
             })

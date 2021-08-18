@@ -14,13 +14,18 @@ const qcmbrowser = require('./QCM/qcm-browser.js')
 class QcmApi {
     // Get Qcm
     get_qcm(req, res) {
+        const json = JSON.parse( // Parse the following data to JSON
+            fs.readFileSync(`./qcm-data/${req.params.qcm}.json`) // Read File
+                .toString('utf-8') // Transform Buffer into String
+                .split("\"status\":true") // Remove status that are true
+                .join("\"status\":false") // Replace them by false statuses
+        )
+
+        const qcm = qcmloader.buildQcm(json)
+        // qcm.shuffle()
+
         res.send( // Send following JSON data
-            JSON.parse( // Parse the following data to JSON
-                fs.readFileSync(`./qcm-data/${req.params.qcm}.json`) // Read File
-                    .toString('utf-8') // Transform Buffer into String
-                    .split("\"status\":true") // Remove status that are true
-                    .join("\"status\":false") // Replace them by false statuses
-            )
+            JSON.stringify(qcm)   
         )
     }
     // Create QCM
