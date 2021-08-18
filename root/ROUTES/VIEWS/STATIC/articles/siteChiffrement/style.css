@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+
+
 .capture-droite{
     float: right;
 }
@@ -8,8 +11,20 @@
     height: 300px;
     width: auto;
 }
+
+#embedded {
+    background-color: #dddce6;
+    margin: 5em;
+    font-family: "Space Mono", sans-serif;
+    font-size: .75em;
+}
+
 div{
     text-align: center;
+}
+
+body {
+    padding: 30px;
 }
 
 figure {
@@ -18,8 +33,9 @@ figure {
     font-style: italic;
     font-size: smaller;
     text-indent: 0;
-    border: thin silver solid;
-    margin: 0.5em;
-    padding: 0.5em;
+    padding: 2em;
   }
-  
+
+  figcaption {
+    color: grey;
+  }
