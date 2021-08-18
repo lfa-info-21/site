@@ -49,6 +49,9 @@ router.get('/about', async function (req, res) {
 router.get('/login/', (req, res) => {
     res.render('login.html', {})
 })
+router.get('/signup/', (req, res) => {
+    res.render('signup.html', {})
+})
 
 router.get('/contact/', (req, res) => {
     res.render('contact.html', {})

@@ -78,7 +78,51 @@ function login(req, res) {
     })
 }
 
+function signup (req, res) {
+    if (!(req.body.username && req.body.password)) {
+        res.send(JSON.stringify({ "created":false, "global_err":"Missing username or password" }))
+        return ;
+    }
+
+    const username = req.body.username
+    const password = req.body.password
+    const passhash = req.app.hash(password)
+
+    if (username.length < 5 || password.length < 8) {
+        res.send(JSON.stringify({ "created":false, "global_err":"The password or the username is too short" }))
+        return ;
+    }
+
+    let db = req.app.db;
+    db.user.objects.filter({ username: username }).all(async function (err, dat) {
+        if (!(dat == undefined || dat.length != 1)) {
+            res.send(JSON.stringify({ "created":false, "user_err":"Username already exists" }))
+            return
+        }
+
+        db.db.serialize( function call() {
+
+        db.user.objects.create( {
+            username: username,
+            pwd: passhash
+        } )
+
+        db.user.objects.filter({ username: username, pwd: passhash }).all(async function (err, dat) {
+            req.session.logged_in = true
+            req.session.username = username
+            req.session.userid = dat[0].id
+            req.session.userdata = dat[0]
+            req.session.permissions = []
+
+            res.send(JSON.stringify({ "created":true }))
+        })
+
+        })
+    })
+}
+
 router.post("/login", login)
+router.post("/signup", signup)
 router.post("/qcm/create", QCM_API.create_qcm)
 router.get("/qcm/:qcm", QCM_API.get_qcm)
 

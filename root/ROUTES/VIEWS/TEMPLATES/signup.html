@@ -4,16 +4,84 @@
 	<head>
 		<title>Inscription - Club info</title>
 		<link rel="icon" href="favicon.ico">
-		<link rel="stylesheet" type="text/css" href="STATIC/CSS/login.css"/>
+		<link rel="stylesheet" type="text/css" href="/CSS/login.css"/>
 	</head>
 
-	<body>
-		<form>
+	<body id="login">
+		<form id="create_account_form">
 			<h2><b>Inscription</b></h2>
-			<input type="text" name="username" placeholder="username">
-			<input type="password" name="password" placeholder="password">
-			<button>S'inscrire</button>
-			<p>Déjà inscrit ? <a href="login.html">Se connecter</a></p>
+			<input type="text" name="username" placeholder="Nom d'utilisateur" style="margin-bottom: 0px;">
+			<small class="error" id="usersup8">Le nom d'utilisateur doit faire au moins 5 charactères</small>
+			<small class="error" id="err_username"></small>
+			<div style="margin-bottom: 10px;"></div>
+			<input type="password" name="password" placeholder="Mot de passe" style="margin-bottom: 0px;">
+			<small class="error" id="mdpsup8">Le mot de passe doit faire au moins 8 charactères</small>
+			<button style="margin-top: 20px;" type="button">S'inscrire</button>
+			<p>Déjà inscrit ? <a href="/login">Se connecter</a></p>
 		</form>
 	</body>
+
+
+
+	<script>
+
+		const form = document.querySelector("from#create_account_form")
+		const pwd = document.querySelector("input[name=password]")
+		const username = document.querySelector("input[name=username]")
+		const pwd_rule = document.querySelector("small.error#mdpsup8")
+		const user_rule = document.querySelector("small.error#usersup8")
+		const user_err = document.querySelector("small#err_username")
+		const submit = document.querySelector("button")
+
+		pwd_rule.classList = pwd.value.length >= 8 ? [] : ["error"]
+		user_rule.classList = username.value.length >= 5 ? [] : ["error"]
+
+		submit.disabled = ! (pwd.value.length >= 8 && username.value.length >= 5);
+	
+		// No need of transition in start of window
+		pwd_rule.style.transition = "0s";
+		user_rule.style.transition = "0s";
+		submit.style.transition = "0s";
+		// Wait for the next js clock to get back to normal so that css is well aplyed
+		setTimeout(function () {
+			pwd_rule.style.transition = "1s";
+			user_rule.style.transition = "1s";
+			submit.style.transition = "1s";
+		}, 0)
+
+		pwd.addEventListener("input", (event) => {
+			pwd_rule.classList = pwd.value.length >= 8 ? [] : ["error"]
+			submit.disabled = ! (pwd.value.length >= 8 && username.value.length >= 5);
+		})
+		username.addEventListener("input", (event) => {
+			user_rule.classList = username.value.length >= 5 ? [] : ["error"]
+			submit.disabled = ! (pwd.value.length >= 8 && username.value.length >= 5);
+		})
+
+		submit.onclick = function () {
+			submit.disabled = ! (pwd.value.length >= 8 && username.value.length >= 5)
+			if (submit.disabled) return ;
+
+			const API = "/api/signup"
+			const data = {
+				"username":username.value,
+				"password":pwd.value
+			}
+
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", API, true);
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.send(JSON.stringify(data));
+			xhr.onload = function() {
+				var data = JSON.parse(this.responseText);
+
+				if (data.created) {
+					document.location.replace("/")
+				}
+
+				user_err.innerHTML = data.user_err ? data.user_err : ""
+			}
+		}
+
+	</script>
 </html>
