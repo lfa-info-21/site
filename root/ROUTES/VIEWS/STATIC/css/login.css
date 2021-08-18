@@ -52,10 +52,15 @@ form button {
 	padding: 15px;
 	font-size: 15px;
 	color: #fff;
+	transition: 0.25s;
 }
 
 form button:hover, form button:active, form button:focus {
 	background-color: #7a2d9c;
+}
+
+form button:disabled {
+	background: #b187c7;
 }
 
 a {
@@ -66,4 +71,20 @@ a {
 
 a:hover, a:focus, a:active {
 	color: #ae72cc;
+}
+
+small {
+	margin-top: 0px;
+	font-weight: 100;
+	font-size: 10px;
+	color: #9298a1;
+	transition: 1s;
+}
+
+small.error {
+	color: #a1301c;
+}
+
+smalldiv {
+	margin-bottom: 10px;
 }
