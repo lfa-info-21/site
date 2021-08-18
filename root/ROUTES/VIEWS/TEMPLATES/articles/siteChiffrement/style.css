@@ -1,0 +1,25 @@
+.capture-droite{
+    float: right;
+}
+.capture-gauche{
+    float: left;
+}
+.meme_hauteur {
+    height: 300px;
+    width: auto;
+}
+div{
+    text-align: center;
+}
+
+figure {
+    width: 30%;
+    text-align: center;
+    font-style: italic;
+    font-size: smaller;
+    text-indent: 0;
+    border: thin silver solid;
+    margin: 0.5em;
+    padding: 0.5em;
+  }
+  

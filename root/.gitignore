@@ -4,5 +4,3 @@ renderer-utils/
 node_modules/
 db.sqlite3
 test_db.js
-server.js
-utils.js

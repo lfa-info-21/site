@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chiffrage et analyse de fréquence</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/articles/siteChiffrement/style.css">
+    <script defer src="main.js"></script>
+</head>
+<body>
+    <h1>Chiffrage et analyse de fréquence</h1>
+    <h2>La méthode des fréquences</h2>
+    <figure class="capture-droite">
+        <img  src="/articles/siteChiffrement/Fréquence-wikipédia.PNG"
+        width="360" height="270"
+        alt="lettres les plus fréquentes sur le site wikipédia">
+        <figcaption>Les lettres les plus fréquentes sur le site wikipedia en 2008 :</figcaption>
+    </figure>     
+    <ul>L'historien romain Suétone (env. 150 ap J.C.) nous dit que César (env 100 - 44 av J.C.)
+         correspondait par code en utilisant un décalage dans les lettres. Par exemple: <em>Alea
+         jacta est</em>  pouvait devenir <em>Bmfb kbdub ftu</em>. C'est un système simple et
+         on pourrait imaginer de le compliquer en échangeant les lettres de manière arbitraire
+         et pas forcément avec un simple décalage.
+        <br>
+        Pour casser un tel cryptage,  le mathématicien Al Kindi (801-873) eut l'idée d'analyser les
+         fréquences des lettres, c'est-à-dire de compter la proportion de chaque lettre dans le texte
+          codé. La lettre la plus fréquente
+        pouvant être identifié coderait donc la lettre la plus fréquente de la langue française, le 
+        <em>e</em> , et ainsi de suite.<br><br>
+        On pourrait par exemple calculer les fréquences des lettres dans ce passage de Balzac 
+        (Illusions perdues) à la main ou à l'aide d'un <a href="/articles/siteChiffrement/python_frequentiel.py" >outil d'analyse de fréquences python</a>: <br>
+        <em>Ève redoubla de courage en voyant le malheur redoubler de furie. Lagrandeur de son mari, 
+        sa naïveté d’inventeur, les larmes qu’elle sur-prit parfois dans les yeux de cet homme de 
+        cœur et de poésie, tout développa chez elle une force de résistance inouïe.</em><br>
+        </ul>
+    <figure class="capture-gauche" >
+            <img src="/articles/siteChiffrement/Alkindi-affiche-2020-capture.png"
+            width="250" height="300"
+            alt="*Affiche du concours Alkindi 2020-2021">
+            <figcaption>Affiche du <a href=https://concours-alkindi.fr/#>concours Alkindi</a>
+                 2020-2021 :</figcaption>
+    </figure>    
+    <ul>Pour le concours AlKindi vous aurez à travailler en groupe. Il faudra donc se répartir les 
+        tâches pour être le plus efficace possible dans votre comptage.<br> Dresser un tableau dans l’ordre
+        décroissant des fréquences et le comparer avec celui du site wikipedia est une première étape
+        permettant le décryptage du texte. On peut tout de même remarquer qu’on ne peut 
+        appliquer de manière stricte l’algorithme, notre texte étant trop court.<br> Cependant, nous pouvons
+        facilement décrypter de petits textes à condition d’adapter la méthode. Les fréquences nous
+        donnent des indications mais pas la solution finale. <br>Essayez la phrase suivante :<br> <em> Rçbzqc,
+        zhlç ozq rz edlld, drs oéqd cd cdtw dmezmsr, jk z dt kdanm fnts cd md izlzhr ozqkdq cd tdt          
+        sdmszshudr, Éud z dt k’ddroqhs cdkd ezhqd qdmnmbfq ë k’çszs c’kmudmsdtq. </em> <br>Commencez par chercher
+        quelle est la lettre qui code la lettre <em>e</em>, <em>a</em> et <em>s</em>. Comment peut-on a priori
+        distinguer le <em>a</em> du <em>s</em> ? <br> Cherchez à améliorer la simple analyse des fréquences en trouvant 
+        les propriétés de chacune des lettres. Attention, le cryptographe a commis quelques
+        erreurs en chiffrant le message ! <br> Bonne chance !<br></ul>
+    <h2>Bigrammes</h2>
+    <figure class="capture-droite">
+        <img  src="/articles/siteChiffrement/fréquence-bigramme.PNG"
+        width="360" height="270"
+        alt="bigrammes les plus fréquents sur le site wikipédia">
+        <figcaption>Bigrammes les plus fréquents sur le site wikipédia :</figcaption>
+    </figure> 
+    <ul> Après avoir déchiffré quelques textes, on remarque vite que le décodage simple fréquentiste
+         n’est pas suffisant. Peut-être dans l’exercice
+        précédent avez-vous eu l’idée de regrouper les lettres par deux ? Par exemple, on rencontre
+        rarement des mots avec <em>aa</em> ou <em>ii</em> ,en revanche le doublement du <em>s</em> 
+        est fréquent donc bien que ces 
+        trois lettres aient la même fréquence, on peut facilement distinguer le <em>s</em>. Nous allons
+        généraliser cette méthode et regarder les fréquences des paires de lettres ce que 
+        l’on appelle un bigramme. <br>
+        Combiner les bigrammes avec les lettres pour chercher des méthodes vous
+        permettra de décoder des textes de plus en plus rapidement. Intuivement lorsque vous décoder vous utilisez
+        des méthodes et pas seulement la fréquence :<br> la position de la lettre à son importance, 
+        les lettres qui doublent fréquemment sont peu nombreuses etc. <br>Nous verrons qu’un ordinateur
+        est incapable par la simple analyse des fréquences de faire cette feuille d’exercice. Il
+        a besoin de beaucoup plus d’information. C’est un phénomène général : nous avons une
+        capacité à conceptualiser à partir de très peu d’exemples. Essayez peu à peu de développer
+        votre propre méthode de décryptage et de la mettre par écrit. Chaque semaine vous 
+        l’améliorerez et vous arriverez finalement à un algorithme que vous pourrez implémenter 
+        pour aider l’ordinateur à décrypter. <br> Ceci étant dit essayez de décoder le texte suivant :<br>
+        <em>if qrpaz d tbsracnetlpf q fze wantcfbe erj rb njjafbd jiftb df qhrzfzqrccfdfqagjefa anjtdfcfbe
+        dfz efoefz hgjfa tbefafzznbez lpt anqrbefbe jiftb d nwf-bepafzcfawftiifpzfz dxnyfbez zfqafez
+        lpt srbe pb jfp earj df snpefz d raeh-ryansfn crtbz lpf qf bf zrte fojafz jrpa lpf i rb nte
+        dp cni n dxqhtssafaifpazefoefz cgzexatfpox.</em>
+    </ul>
+    <h2>Un  exercice d'experts!</h2>
+    <ul>Maintenant que vous connaissez les outils principaux premettant de déchiffrer un texte,
+        voici un exemple pour vous entraîner! Lors de la finale Al Kindi 2018, l’exercice suivant
+        a été proposé sans aucun énoncé. Saurez-vous utiliser la méthode d’Al Kindi pour déchiffrer 
+        le code?
+    </ul>
+    <div><img src="/articles/siteChiffrement/exercice-alkindi.PNG" alt="exercice finale Alkindi"></div><br><br>
+    <p align="right">Adam Bouziane, élève au LFA de Buc</p>     
+</body>
+</html>
