@@ -47,8 +47,4 @@ function build_question(question) {
 get_qcm(function (json) {
     QUESTION_CONTAINER.innerHTML = `<form class="form">${json.questions.map(build_question).join('<br>')}</form>`
     convert_qcm()
-<<<<<<< HEAD:public/js/qcm-load.js
 })
-=======
-})
->>>>>>> f93918ea8ae8bcd42cedc79759f4c4900eb7e532:root/ROUTES/VIEWS/STATIC/js/qcm-load.js
