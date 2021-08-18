@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Website</title>
+        <%- include('head/meta.html'); -%>
+        <%- include('head/head.html'); -%>
+    </head>
+
+    <body>
+        <div id="content">
+            <h1 id="title">CatWeb</h1>
+            <% if (!logged_in) { %>
+                <p>Hello, if you are the owner of this website, you can: <a href="/login/">Login Here</a></p>
+            <% } else { %>
+                <p>You are connected! The session will expire in: <%= time_left %> seconds. <a href="/api/logout/">Logout Here</a></p>
+            <% } %>
+
+            <% if (typeof(posts) != "undefined" && posts) { %>
+                <div class="col">
+                    <% posts.forEach((post) => { %>
+                        <!-- here this html for a post preview should and will be in another template -->
+                        <div class="row post">
+                            <div class="col-5">
+                                <img class="img-responsive post-image" src="<%= post.image %>" width="100%">
+                            </div>
+                            <div class="col">
+                                <h2 class="post-title"><%= post.title %></h2>
+                                <%= post.description %>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <p>Sorry we couldn't find any posts.</p>
+            <% } %>
+            <%= posts[0].fpath %>
+        </div>
+    </body>
+
+</html>
