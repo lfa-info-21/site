@@ -11,13 +11,6 @@ const qcmloader = require('./QCM/qcm.js')
 const qcmcreator = require('./QCM/qcm-loader.js')
 const qcmbrowser = require('./QCM/qcm-browser.js')
 
-const SECRET_PWD_KEY = 'jfrokhfigqzujfDHFJCKSYLOTIR8IOLU'
-function hash(secret) {
-    return crypto.createHmac('sha256', secret)
-        .update(SECRET_PWD_KEY)
-        .digest('hex');
-}
-
 class QcmApi {
     // Get Qcm
     get_qcm(req, res) {

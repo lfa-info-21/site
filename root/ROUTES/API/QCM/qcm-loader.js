@@ -30,7 +30,7 @@ function createObject(file, name, author, category) {
     var data = file.data.toString('utf-8')
 
     var qcm = qcmloader.QCMBuilder.fromLatex(data)
-    qcm.author = 'Unknown'
+    qcm.author = author
     qcm.name = name
     qcm.uuid = genQcmUuid()
     qcm.category = category

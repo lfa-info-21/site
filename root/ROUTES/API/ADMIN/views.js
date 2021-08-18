@@ -48,6 +48,17 @@ router.get('/m/:model', function admin_mhome(req, res) {
     })
 })
 
+router.get('/m/:model/create', function admin_create_model(req, res) {
+    if (check_rights(req, res)) {
+        return
+    }
+
+    var actmodel = get_models()[req.params.model]
+    actmodel.objects.create({})
+
+    res.redirect(`/admin/m/${req.params.model}`)
+})
+
 router.get('/m/:model/o/:id', function admin_mhome(req, res) {
     if (check_rights(req, res)) {
         return
@@ -57,7 +68,7 @@ router.get('/m/:model/o/:id', function admin_mhome(req, res) {
     var id = Number(req.params.id)
     actmodel.objects.filter({ id:id }).all( function (err, dat) {
         if (err || dat == undefined || dat.length != 1) {
-            res.redirect(`/m/${req.params.model}`)
+            res.redirect(`/admin/m/${req.params.model}`)
             return
         }
 
@@ -65,6 +76,17 @@ router.get('/m/:model/o/:id', function admin_mhome(req, res) {
 
         res.render('admin/object.html', { object:object, model:actmodel, url:`/admin/m/${req.params.model}/o/${id}` })
     } )
+})
+router.get('/m/:model/o/:id/delete', function admin_del_obj(req, res) {
+    if (check_rights(req, res)) {
+        return
+    }
+
+    var actmodel = get_models()[req.params.model]
+    var id = Number(req.params.id)
+    actmodel.objects.filter({ id:id }).delete(0, function call(err, all) {
+        res.redirect(`/admin/m/${req.params.model}`)
+    })
 })
 
 router.post('/m/:model/o/:id/update', function admin_mhome(req, res) {

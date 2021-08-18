@@ -2,7 +2,7 @@
 
 function convert_qcm() {
 
-    RegExp.prototype.matches = function (str) {
+    RegExp.prototype.matches = function ( str ) {
         let index = 0;
         let act = "";
         let arr;
@@ -14,9 +14,9 @@ function convert_qcm() {
             index = str.indexOf(act)
 
             values.push({
-                "str": act,
-                "start": index + offset,
-                "end": index + act.length - 1 + offset
+                "str":act,
+                "start":index                + offset,
+                "end":index + act.length - 1 + offset
             })
 
             if (index + act.length == 0) {
@@ -39,39 +39,39 @@ function convert_qcm() {
 
     function single_balanced_match(s, a) {
         let r0 = a.toRegExp();
-
+        
         let arr0 = r0.matches(s);
 
         if (arr0 == null || arr0.length < 2) {
             return {
-                "match": false,
-                "str": "",
+                "match":false,
+                "str":"", 
                 // Match start, if a = "$" and s = "$a$" the mstart is 0 and the mend is 2
-                "mstart": -1,
-                "mend": -1,
+                "mstart":-1,
+                "mend":-1,
                 // Inner start, if a = "$" and s = "$a$" the start is 1 and the end is 1
-                "start": -1,
-                "end": -1,
-                "null": false
+                "start":-1,
+                "end":-1,
+                "null":false
             }
         }
 
         let mstart = arr0[0].start;
         let start = arr0[0].end + 1;
-
+        
         let mend = arr0[1].end;
         let end = arr0[1].start - 1;
 
         return {
-            "match": true,
-            "str": start == end + 1 ? "" : s.substr(start, end + 1 - start),
+            "match":true,
+            "str":start == end + 1 ? "" : s.substr(start, end + 1 - start),
             // Match start, if a = "$" and s = "$a$" the mstart is 0 and the mend is 2
-            "mstart": mstart,
-            "mend": mend,
+            "mstart":mstart,
+            "mend":mend,
             // Inner start, if a = "$" and s = "$a$" the start is 1 and the end is 1
-            "start": start,
-            "end": end,
-            "null": start == end + 1
+            "start":start,
+            "end":end,
+            "null":start == end + 1
         }
     }
 
@@ -82,7 +82,7 @@ function convert_qcm() {
 
         let r0 = a.toRegExp();
         let r1 = b.toRegExp();
-
+        
         let arr0 = r0.matches(s);
         let arr1 = r1.matches(s);
 
@@ -92,10 +92,10 @@ function convert_qcm() {
         arr1.forEach(element => {
             element["type"] = "ed";
         });
-
+    
         let arr2 = new Array()
-        arr0.forEach(el => { arr2.push(el) })
-        arr1.forEach(el => { arr2.push(el) })
+        arr0.forEach(el => {arr2.push(el)})
+        arr1.forEach(el => {arr2.push(el)})    
 
         arr2.sort((a, b) => {
             if (a.start == b.start) {
@@ -110,22 +110,22 @@ function convert_qcm() {
 
         if (arr2.length == 0 || arr2[0].type == "ed")
             return {
-                "match": false,
-                "str": "",
+                "match":false,
+                "str":"", 
                 // Match start, if a = "$" and s = "$a$" the mstart is 0 and the mend is 2
-                "mstart": -1,
-                "mend": -1,
+                "mstart":-1,
+                "mend":-1,
                 // Inner start, if a = "$" and s = "$a$" the start is 1 and the end is 1
-                "start": -1,
-                "end": -1,
-                "null": false
+                "start":-1,
+                "end":-1,
+                "null":false
             }
 
         let count = 1;
         let start = arr2[0].start;
         let end = arr2[0].end;
         let idx = 1;
-
+        
         while (count != 0 && idx != arr2.length) {
             count += arr2[idx].type == "str" ? 1 : -1;
             end = arr2[idx].end;
@@ -137,26 +137,26 @@ function convert_qcm() {
 
         if (count > 0)
             return {
-                "match": false,
-                "str": "",
+                "match":false,
+                "str":"", 
                 // Match start, if a = "$" and s = "$a$" the mstart is 0 and the mend is 2
-                "mstart": -1,
-                "mend": -1,
+                "mstart":-1,
+                "mend":-1,
                 // Inner start, if a = "$" and s = "$a$" the start is 1 and the end is 1
-                "start": -1,
-                "end": -1,
-                "null": false
+                "start":-1,
+                "end":-1,
+                "null":false
             }
         let val = {
-            "match": true,
-            "str": "",
+            "match":true,
+            "str":"", 
             // Match start, if a = "$" and s = "$a$" the mstart is 0 and the mend is 2
-            "mstart": start,
-            "mend": end,
+            "mstart":start,
+            "mend":end,
             // Inner start, if a = "$" and s = "$a$" the start is 1 and the end is 1
-            "start": -1,
-            "end": -1,
-            "null": false
+            "start":-1,
+            "end":-1,
+            "null":false
         }
 
         val.start = val.mstart + arr2[0].end - arr2[0].start + 1;
@@ -180,11 +180,11 @@ function convert_qcm() {
 
     let html = document.getElementById("qcm-container").innerHTML
     let match;
-    while ((match = balanced_match(html, "\\$", "\\$")).match) {
+    while ((match=balanced_match(html, "\\$", "\\$")).match) {
         let length = match.mend + 1 - match.mstart;
         let rstr = html.substr(match.mstart, length);
 
-        // html = html.replace(rstr, get_img(match.str))
+       // html = html.replace(rstr, get_img(match.str))
         if (LATEX_CODECOGS_ENABLED)
             html = html.replace(rstr, get_img(match.str))
     }
@@ -195,3 +195,4 @@ function convert_qcm() {
 
 
 LATEX_CODECOGS_ENABLED = true
+

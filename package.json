@@ -1,0 +1,40 @@
+{
+  "name": "website",
+  "version": "1.0.0",
+  "description": "Club Info LFA Website",
+  "main": "server.js",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-session": "^1.17.2",
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^12.0.6",
+    "markdown-it-katex": "^2.0.3",
+    "number-is-nan": "^1.0.1",
+    "oauth-sign": "^0.9.0",
+    "object-assign": "^4.1.1",
+    "os-homedir": "^1.0.2",
+    "os-tmpdir": "^1.0.2",
+    "osenv": "^0.1.5",
+    "path-is-absolute": "^1.0.1",
+    "performance-now": "^2.1.0",
+    "process-nextick-args": "^2.0.1",
+    "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lfa-info-21/site.git"
+  },
+  "author": "CLUB LFA",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lfa-info-21/site/issues"
+  },
+  "homepage": "https://github.com/lfa-info-21/site#readme"
+}
